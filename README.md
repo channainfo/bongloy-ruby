@@ -1,6 +1,6 @@
 # Bongloy
 
-TODO: Write a gem description
+Consumes the [Bongloy API](http://bongloy.com)
 
 ## Installation
 
