@@ -3,7 +3,7 @@ require 'spec_helper'
 module Bongloy
   module ApiResource
     describe Token do
-      include Bongloy::SpecHelpers::ApiResourceExamples
+      include Bongloy::SpecHelpers::ApiRequestExamples
 
       let(:api_request_helpers) { Bongloy::SpecHelpers::ApiRequestHelpers.new }
       let(:api_resource_endpoint) { :tokens }

@@ -1,6 +1,6 @@
 module Bongloy
   module SpecHelpers
-    module ApiResourceExamples
+    module ApiRequestExamples
 
       private
 
