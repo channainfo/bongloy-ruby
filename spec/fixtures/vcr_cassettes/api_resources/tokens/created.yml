@@ -1,0 +1,50 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: <%= endpoint %>
+    body:
+      encoding: UTF-8
+      string: card[number]=4242424242424242&card[exp_month]=12&card[exp_year]=2015&card[cvc]=123&card[name]=John%20Citizen&card[address_line1]=cc%20Address%20Line%201&card[address_line2]=cc%20Address%20Line%202&card[address_city]=Melbourne&card[address_state]=Victoria&card[address_zip]=3001&card[address_country]=Australia
+    headers:
+      Authorization:
+      - Bearer sk_test_790c5929ca876a5367318150285cb11e9b97509d0b9c1f5d29863b9e5fba52ab
+  response:
+    status:
+      code: 201
+      message: 'Created '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Ua-Compatible:
+      - chrome=1
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - '"fc23ea46f3971380ff0f98bddc6005f1"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 5a19a0a2-d675-4a51-a860-fc48e0eccfc9
+      X-Runtime:
+      - '0.156284'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.1.0/2013-12-25)
+      Date:
+      - Sun, 18 May 2014 05:48:50 GMT
+      Content-Length:
+      - '610'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '{"id":"tok_392129823bd27ab10ee75666e3029603","used":false,"livemode":false,"object":"token","card":{"id":"card_239da91ccb1d5a549f9d5367f3059abe","exp_month":12,"exp_year":2015,"name":"John
+        Citizen","address_line1":"cc Address Line 1","address_line2":"cc Address Line
+        2","address_city":"Melbourne","address_state":"Victoria","address_zip":"3001","address_country":"Australia","fingerprint":null,"country":null,"cvc_check":null,"address_line1_check":null,"address_zip_check":null,"object":"credit_card","last4":"4242","created":1400392130,"type":"visa","customer":null},"type":"credit_card","created":1400392130}'
+    http_version:
+  recorded_at: Sun, 18 May 2014 05:48:50 GMT
+recorded_with: VCR 2.5.0

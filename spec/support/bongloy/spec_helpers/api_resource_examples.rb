@@ -1,8 +1,18 @@
 module Bongloy
   module SpecHelpers
     module ApiResourceExamples
-      shared_examples_for "a bongloy api resource" do
 
+      private
+
+      def expect_api_request(request_type, options = {}, &block)
+        api_request_helpers.expect_api_request(
+          {
+            :api_resource_endpoint => api_resource_endpoint, :request_type => request_type
+          }.merge(options), &block
+        )
+      end
+
+      shared_examples_for "a bongloy api resource" do
         describe "#initialize(options = {})" do
           context "passing an :api_key" do
             let(:api_key) { "pk_test_12345" }
@@ -15,16 +25,29 @@ module Bongloy
           end
 
           context "without passing an :api_key" do
-            it "should set the api key to whatever is in ENV['BONGLOY_SECRET_KEY']" do
+            it "should set the api_key to ENV['BONGLOY_SECRET_KEY']" do
               subject.api_key.should == ENV["BONGLOY_SECRET_KEY"]
             end
           end
         end
 
         describe "#save!" do
-          context "for unpersisted resources" do
-            it "should create a bongloy resource" do
-              subject.save!
+          context "with an invalid key" do
+            it "should raise a Bongloy::Error::Api::AuthentiationError" do
+              expect_api_request(:unauthorized) do
+                expect { subject.save! }.to raise_error(Bongloy::Error::Api::AuthenticationError)
+              end
+            end
+          end
+
+          context "for a new resource" do
+            it "should try to create a bongloy resource" do
+              api_request_helpers.expect_api_request(
+                :cassette => "api_resources/unauthorized", :match_requests_on => [:host]
+              ) do
+                expect { subject.save! }.to raise_error(Bongloy::Error::Api::AuthenticationError)
+                WebMock.requests.last.method.should == :post
+              end
             end
           end
         end
