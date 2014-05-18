@@ -7,7 +7,16 @@ FactoryGirl.define do
     params { {} }
   end
 
+  sequence :token_id do |n|
+    Bongloy::SpecHelpers::ApiHelpers.new.sample_token_id(n)
+  end
+
   factory :token, :class => Bongloy::ApiResource::Token do
+    trait :with_id do
+      invalid
+      id { generate(:token_id) }
+    end
+
     skip_create
     params { Bongloy::SpecHelpers::ApiHelpers.new.credit_card_token_params }
     initialize_with { new(params) }

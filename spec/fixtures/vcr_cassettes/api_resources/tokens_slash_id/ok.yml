@@ -1,0 +1,50 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: <%= endpoint %>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - Bearer pk_test_7d057f151650bdf8992bb1491f47270cc22d92e691b4f008082fc9721b518a0e
+  response:
+    status:
+      code: 200
+      message: 'OK '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Ua-Compatible:
+      - chrome=1
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - '"7a2e77be1bc68296ea5b7bf8172b2dc1"'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 65173482-aed8-4539-bfb9-83fce88ffbfb
+      X-Runtime:
+      - '0.092741'
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.1.0/2013-12-25)
+      Date:
+      - Sun, 18 May 2014 10:18:29 GMT
+      Content-Length:
+      - '591'
+      Connection:
+      - Keep-Alive
+      Set-Cookie:
+      - request_method=GET; path=/
+    body:
+      encoding: UTF-8
+      string: '{"id":"tok_6a6321cdb6a77d5b0b6ade95d91382e2","used":false,"livemode":false,"object":"token","card":{"id":"card_cc7fd8c7952360a4f7a1d61b85becf34","exp_month":11,"exp_year":2014,"name":"someone@gmail.com","address_line1":null,"address_line2":null,"address_city":null,"address_state":null,"address_zip":null,"address_country":null,"fingerprint":null,"country":null,"cvc_check":null,"address_line1_check":null,"address_zip_check":null,"object":"credit_card","last4":"4242","created":1400319157,"type":"visa","customer":null},"type":"credit_card","created":1400319157,"email":"someone@gmail.com"}'
+    http_version:
+  recorded_at: Sun, 18 May 2014 10:18:29 GMT
+recorded_with: VCR 2.5.0
