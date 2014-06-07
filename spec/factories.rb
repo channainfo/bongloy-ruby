@@ -27,4 +27,11 @@ FactoryGirl.define do
     api_key { "pk_test_some_api_key" }
     initialize_with { new(api_key) }
   end
+
+  factory :customer, :class => Bongloy::ApiResource::Customer do
+    skip_create
+
+    params { { :card => generate(:token_id) } }
+    initialize_with { new(params) }
+  end
 end
