@@ -31,6 +31,41 @@ module Bongloy
           end
         end
 
+        describe "#id" do
+          it "should behave like a normal getter/setter" do
+            subject.id.should be_nil
+            subject.id = 1
+            subject.id.should == 1
+          end
+
+          it "should look in the params hash for the id" do
+            subject.id.should be_nil
+            subject.params = {:id => 1}
+            subject.id.should == 1
+          end
+        end
+
+        describe "#params" do
+          let(:sample_params) {  }
+
+          before do
+            subject.params = {"foo" => "bar"}
+          end
+
+          it "should behave like a normal getter/setter" do
+            subject.params.should == {"foo" => "bar"}
+          end
+
+          it "should set up method readers and writers for the params" do
+            subject.foo.should == "bar"
+          end
+
+          it "should have indifferent access" do
+            subject.params["foo"].should == "bar"
+            subject.params[:foo].should == "bar"
+          end
+        end
+
         describe "#save!" do
           context "with an invalid key" do
             it "should raise a Bongloy::Error::Api::AuthentiationError" do
@@ -41,12 +76,21 @@ module Bongloy
           end
 
           context "for a new resource" do
-            it "should try to create a bongloy resource" do
-              api_request_helpers.expect_api_request(
-                :cassette => "api_resources/unauthorized", :match_requests_on => [:host]
-              ) do
-                expect { subject.save! }.to raise_error(Bongloy::Error::Api::AuthenticationError)
-                WebMock.requests.last.method.should == :post
+            context "with valid params" do
+              it "should return true" do
+                expect_api_request(:created) do
+                  subject.save!.should == true
+                  subject.id.should_not be_nil
+                end
+              end
+            end
+
+            context "with incorrect authentication" do
+              it "should raise an AuthenticationError" do
+                expect_api_request(:unauthorized) do
+                  expect { subject.save! }.to raise_error(Bongloy::Error::Api::AuthenticationError)
+                  WebMock.requests.last.method.should == :post
+                end
               end
             end
           end

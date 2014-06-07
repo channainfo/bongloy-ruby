@@ -17,7 +17,8 @@ module Bongloy
       end
 
       def save!
-        persisted? ? client.update_resource(resources_path, api_key, params) : client.create_resource(resources_path, api_key, params)
+        self.params = persisted? ? client.update_resource(resources_path, api_key, params) : client.create_resource(resources_path, api_key, params)
+        true
       end
 
       def retrieve!
@@ -27,6 +28,10 @@ module Bongloy
 
       def params=(options)
         @params = Attributes[options]
+      end
+
+      def id
+        @id || params[:id]
       end
 
       private

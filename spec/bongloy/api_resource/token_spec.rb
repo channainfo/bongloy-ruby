@@ -13,14 +13,6 @@ module Bongloy
       it_should_behave_like "a bongloy api resource"
 
       describe "#save!" do
-        it "should save the resource" do
-          # the account which the token belongs to must be the BONGLOY_SECRET_KEY
-          expect_api_request(:created) do
-            subject.save!
-            subject.card.should_not be_nil
-          end
-        end
-
         context "with invalid params" do
           subject { build(:token, :invalid) }
 
