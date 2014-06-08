@@ -4,11 +4,11 @@ module Bongloy
   module Error
     module Api
       class NotFoundError < Base
-        attr_accessor :resource, :message
+        attr_accessor :resource
 
         def initialize(options = {})
+          super
           self.resource = options[:resource]
-          self.message = options[:message]
         end
 
         def message

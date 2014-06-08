@@ -84,15 +84,6 @@ module Bongloy
                 end
               end
             end
-
-            context "with incorrect authentication" do
-              it "should raise an AuthenticationError" do
-                expect_api_request(:unauthorized) do
-                  expect { subject.save! }.to raise_error(Bongloy::Error::Api::AuthenticationError)
-                  WebMock.requests.last.method.should == :post
-                end
-              end
-            end
           end
         end
       end

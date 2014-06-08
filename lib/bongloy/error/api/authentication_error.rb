@@ -4,8 +4,9 @@ module Bongloy
   module Error
     module Api
       class AuthenticationError < Base
+
         def message
-          "No valid API key provided."
+          @message || "No valid API key provided."
         end
       end
     end
