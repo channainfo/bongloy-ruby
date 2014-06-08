@@ -30,5 +30,9 @@ FactoryGirl.define do
 
   factory :customer, :class => Bongloy::ApiResource::Customer do
     skip_create
+
+    trait :with_card do
+      card { generate(:token_id) }
+    end
   end
 end
