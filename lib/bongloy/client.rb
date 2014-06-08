@@ -38,7 +38,7 @@ module Bongloy
         if response.code == 401
           raise(::Bongloy::Error::Api::AuthenticationError)
         elsif response.code == 422 || response.code == 400
-          raise(::Bongloy::Error::Api::InvalidRequestError)
+          raise(::Bongloy::Error::Api::InvalidRequestError.new(:message => response.body))
         elsif response.code == 404
           raise(::Bongloy::Error::Api::NotFoundError.new(:resource => response.request.path.to_s))
         else

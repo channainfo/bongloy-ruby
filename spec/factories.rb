@@ -30,8 +30,5 @@ FactoryGirl.define do
 
   factory :customer, :class => Bongloy::ApiResource::Customer do
     skip_create
-
-    params { { :card => generate(:token_id) } }
-    initialize_with { new(params) }
   end
 end
