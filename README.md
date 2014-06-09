@@ -18,7 +18,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+## Tokens
+
+### Create a Token
+
+```ruby
+require 'bongloy'
+
+token = Bongloy::ApiResource::Token.new
+token.api_key = "<your_api_key>"
+token.save!
+```
 
 ## Contributing
 

@@ -25,21 +25,13 @@ module Bongloy
       end
 
       describe "#retrieve!" do
-        context "without first specifying an id" do
-          it "should raise a Bongloy::Error::Api::NotFoundError" do
-            expect { subject.retrieve! }.to raise_error(Bongloy::Error::Api::NotFoundError)
-          end
-        end
+        # the account which the token belongs to must be the BONGLOY_SECRET_KEY
+        subject { build(:token, :with_id, :id => "tok_replace_me_with_an_actual_token") }
 
-        context "specifying an id" do
-          # the account which the token belongs to must be the BONGLOY_SECRET_KEY
-          subject { build(:token, :with_id, :id => "tok_replace_me_with_an_actual_token") }
-
-          it "should try to find the resource by the given id" do
-            expect_api_request(:ok, :api_resource_id => subject.id) do
-              subject.retrieve!
-              subject.card.should_not be_nil
-            end
+        it "should try to find the resource by the given id" do
+          expect_api_request(:ok, :api_resource_id => subject.id) do
+            subject.retrieve!
+            subject.card.should_not be_nil
           end
         end
       end

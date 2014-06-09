@@ -16,14 +16,14 @@ module Bongloy
         self.api_key = params.delete(:api_key) || ENV["BONGLOY_SECRET_KEY"]
       end
 
-      def save!
-        self.params = persisted? ? client.update_resource(resources_path, api_key, params) : client.create_resource(resources_path, api_key, params)
+      def save!(headers = {})
+        self.params = persisted? ? client.update_resource(resources_path, api_key, params) : client.create_resource(resources_path, api_key, params, headers)
         true
       end
 
-      def retrieve!
+      def retrieve!(headers = {})
         raise ::Bongloy::Error::Api::NotFoundError.new(:message => "No 'id' specified. You must specify an 'id' for this resource like this: #{self.class.name}.new(:id => <id>)") unless persisted?
-        self.params = client.show_resource("#{resources_path}/#{id}", api_key, params)
+        self.params = client.show_resource("#{resources_path}/#{id}", api_key, params, headers)
       end
 
       def params=(options)

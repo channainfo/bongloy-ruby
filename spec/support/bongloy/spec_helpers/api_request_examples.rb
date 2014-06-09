@@ -13,6 +13,12 @@ module Bongloy
       end
 
       shared_examples_for "a bongloy api resource" do
+        let(:custom_headers) { { "X-Foo" => "bar" } }
+
+        def assert_custom_headers!
+          WebMock.requests.last.headers.should include(custom_headers)
+        end
+
         describe "#initialize(options = {})" do
           context "passing an :api_key" do
             let(:api_key) { "pk_test_12345" }
@@ -66,12 +72,21 @@ module Bongloy
           end
         end
 
-        describe "#save!" do
+        describe "#save!(headers = {})" do
           context "with an invalid key" do
             it "should raise a Bongloy::Error::Api::AuthentiationError" do
               expect_api_request(:unauthorized) do
                 expect { subject.save! }.to raise_error(Bongloy::Error::Api::AuthenticationError)
               end
+            end
+          end
+
+          context "passing custom headers" do
+            it "should send these headers in the request" do
+              expect_api_request(:created) do
+                subject.save!(custom_headers)
+              end
+              assert_custom_headers!
             end
           end
 
@@ -83,6 +98,27 @@ module Bongloy
                   subject.id.should_not be_nil
                 end
               end
+            end
+          end
+        end
+
+        describe "#retrieve!(headers = {})" do
+          context "without first specifying an id" do
+            it "should raise a Bongloy::Error::Api::NotFoundError" do
+              expect { subject.retrieve! }.to raise_error(Bongloy::Error::Api::NotFoundError)
+            end
+          end
+
+          context "passing custom headers" do
+            before do
+              subject.id = "1234"
+            end
+
+            it "should send these headers in the request" do
+              expect_api_request(:ok, :api_resource_id => subject.id) do
+                subject.retrieve!(custom_headers)
+              end
+              assert_custom_headers!
             end
           end
         end
