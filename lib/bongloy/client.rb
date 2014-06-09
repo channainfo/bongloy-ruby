@@ -3,13 +3,11 @@ module Bongloy
     require 'httparty'
 
     BONGLOY_API_ENDPOINT = "https://api.bongloy.com/v1"
-    STRIPE_API_ENDPOINT = "https://api.stripe.com/v1"
 
     attr_accessor :api_endpoint
 
     def initialize(options = {})
-      self.api_endpoint = options[:api_endpoint] ||
-      (ENV["BONGLOY_STRIPE_MODE"].to_i == 1 ? STRIPE_API_ENDPOINT : (ENV["BONGLOY_API_ENDPOINT"] || BONGLOY_API_ENDPOINT))
+      self.api_endpoint = options[:api_endpoint] || ENV["BONGLOY_API_ENDPOINT"] || BONGLOY_API_ENDPOINT
     end
 
     def create_resource(path, api_key, params = {}, headers = {})
