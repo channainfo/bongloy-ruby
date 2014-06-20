@@ -23,7 +23,7 @@ module Bongloy
 
       def retrieve!(query_params = {}, headers = {})
         raise ::Bongloy::Error::Api::NotFoundError.new(:message => "No 'id' specified. You must specify an 'id' for this resource like this: #{self.class.name}.new(:id => <id>)") unless persisted?
-        self.params = client.show_resource("#{resources_path}/#{id}", api_key, params.merge(query_params), headers)
+        self.params = client.show_resource("#{resources_path}/#{id}", api_key, query_params, headers)
       end
 
       def params=(options)
