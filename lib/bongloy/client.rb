@@ -19,7 +19,7 @@ module Bongloy
     end
 
     def update_resource(path, api_key, params = {}, headers = {})
-      do_request(:put, :body, path, api_key, params, headers)
+      do_request(stripe_mode? ? :post : :put, :body, path, api_key, params, headers)
     end
 
     private
@@ -33,6 +33,10 @@ module Bongloy
           :headers => authentication_headers(api_key).merge(headers)
         )
       )
+    end
+
+    def stripe_mode?
+      api_endpoint =~ /api.stripe.com/
     end
 
     def handle_response(response)
