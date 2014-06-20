@@ -19,7 +19,7 @@ module Bongloy
         end
       end
 
-      describe "#save!" do
+      describe "#save!(headers = {})" do
         context "when the customer has no card" do
           before do
             expect_api_request(:created) do
@@ -53,6 +53,18 @@ module Bongloy
                 expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
               end
             end
+          end
+        end
+      end
+
+      describe "#retrieve!(query_params = {}, headers = {})" do
+        # the account which the token belongs to must be the BONGLOY_SECRET_KEY
+        subject { build(:customer, :with_id, :id => "cus_replace_me_with_an_actual_token") }
+
+        it "should try to find the resource by the given id" do
+          expect_api_request(:ok, :api_resource_id => subject.id) do
+            subject.retrieve!
+            subject.object.should == "customer"
           end
         end
       end

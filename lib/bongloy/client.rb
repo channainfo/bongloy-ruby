@@ -11,21 +11,21 @@ module Bongloy
     end
 
     def create_resource(path, api_key, params = {}, headers = {})
-      do_request(:post, path, api_key, params, headers)
+      do_request(:post, :body, path, api_key, params, headers)
     end
 
     def show_resource(path, api_key, params = {}, headers = {})
-      do_request(:get, path, api_key, params, headers)
+      do_request(:get, :query, path, api_key, params, headers)
     end
 
     private
 
-    def do_request(method, path, api_key, params = {}, headers = {})
+    def do_request(method, payload_key, path, api_key, params = {}, headers = {})
       handle_response(
         HTTParty.send(
           method,
           resource_endpoint(path),
-          :body => params,
+          payload_key => params,
           :headers => authentication_headers(api_key).merge(headers)
         )
       )

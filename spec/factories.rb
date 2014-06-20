@@ -11,6 +11,10 @@ FactoryGirl.define do
     Bongloy::SpecHelpers::ApiHelpers.new.sample_token_id(n)
   end
 
+  sequence :customer_id do |n|
+    Bongloy::SpecHelpers::ApiHelpers.new.sample_customer_id(n)
+  end
+
   factory :token, :class => Bongloy::ApiResource::Token do
     trait :with_id do
       invalid
@@ -29,7 +33,9 @@ FactoryGirl.define do
   end
 
   factory :customer, :class => Bongloy::ApiResource::Customer do
-    skip_create
+    trait :with_id do
+      id { generate(:customer_id) }
+    end
 
     trait :with_card do
       card { generate(:token_id) }

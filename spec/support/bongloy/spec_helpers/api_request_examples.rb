@@ -13,7 +13,12 @@ module Bongloy
       end
 
       shared_examples_for "a bongloy api resource" do
+        let(:additional_params) { { "expand" => ["default_card"] } }
         let(:custom_headers) { { "X-Foo" => "bar" } }
+
+        def assert_additional_params!
+          WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.uri.query).should == additional_params
+        end
 
         def assert_custom_headers!
           WebMock.requests.last.headers.should include(custom_headers)
@@ -102,23 +107,34 @@ module Bongloy
           end
         end
 
-        describe "#retrieve!(headers = {})" do
+        describe "#retrieve!(query_params = {}, headers = {})" do
           context "without first specifying an id" do
+            let(:subject) { described_class.new }
+
             it "should raise a Bongloy::Error::Api::NotFoundError" do
               expect { subject.retrieve! }.to raise_error(Bongloy::Error::Api::NotFoundError)
             end
           end
 
-          context "passing custom headers" do
-            before do
-              subject.id = "1234"
+          context "specifying an id" do
+            let(:subject) { described_class.new(:id => "replace_me_with_actual_resource_uuid") }
+
+            context "passing additional params" do
+              it "should send these params in the query string" do
+                expect_api_request(:ok, :api_resource_id => subject.id, :match_requests_on => [:method, :host, :path]) do
+                  subject.retrieve!(additional_params)
+                end
+                assert_additional_params!
+              end
             end
 
-            it "should send these headers in the request" do
-              expect_api_request(:ok, :api_resource_id => subject.id) do
-                subject.retrieve!(custom_headers)
+            context "passing custom headers" do
+              it "should send these headers in the request" do
+                expect_api_request(:ok, :api_resource_id => subject.id) do
+                  subject.retrieve!({}, custom_headers)
+                end
+                assert_custom_headers!
               end
-              assert_custom_headers!
             end
           end
         end
