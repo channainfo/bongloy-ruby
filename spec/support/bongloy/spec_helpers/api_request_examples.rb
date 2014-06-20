@@ -77,6 +77,12 @@ module Bongloy
           end
         end
 
+        describe "#client" do
+          it "should return a new client object" do
+            subject.client.should be_a(Bongloy::Client)
+          end
+        end
+
         describe "#save!(headers = {})" do
           context "with an invalid key" do
             it "should raise a Bongloy::Error::Api::AuthentiationError" do

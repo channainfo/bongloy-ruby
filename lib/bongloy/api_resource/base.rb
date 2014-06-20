@@ -43,6 +43,10 @@ module Bongloy
         @id || params[:id]
       end
 
+      def client
+        @client ||= ::Bongloy::Client.new
+      end
+
       private
 
       def resource_path
@@ -55,10 +59,6 @@ module Bongloy
 
       def persisted?
         !id.nil?
-      end
-
-      def client
-        @client ||= ::Bongloy::Client.new
       end
 
       def method_missing(name, *args)
