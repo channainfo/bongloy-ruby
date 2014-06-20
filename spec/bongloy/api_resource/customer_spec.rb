@@ -20,39 +20,59 @@ module Bongloy
       end
 
       describe "#save!(headers = {})" do
-        context "when the customer has no card" do
-          before do
-            expect_api_request(:created) do
-              subject.save!
-            end
-          end
+        let(:request_body) { WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.body) }
 
-          it "should not have a default card" do
-            subject.default_card.should be_nil
-          end
-        end
-
-        context "when the customer has a card which is" do
-          subject { build(:customer, :with_card) }
-
-          context "valid" do
+        context "for a new customer" do
+          context "when the customer has no card" do
             before do
-              expect_api_request(:created_with_card) do
+              expect_api_request(:created) do
                 subject.save!
               end
             end
 
-            it "should have a default card" do
-              subject.default_card.should_not be_nil
+            it "should not have a default card" do
+              subject.default_card.should be_nil
             end
           end
 
-          context "invalid" do
-            it "should raise a Bongloy::Error::Api::InvalidRequestError" do
-              expect_api_request(:invalid_request) do
-                expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
+          context "when the customer has a card which is" do
+            subject { build(:customer, :with_card) }
+
+            context "valid" do
+              before do
+                expect_api_request(:created_with_card) do
+                  subject.save!
+                end
+              end
+
+              it "should have a default card" do
+                subject.default_card.should_not be_nil
               end
             end
+
+            context "invalid" do
+              it "should raise a Bongloy::Error::Api::InvalidRequestError" do
+                expect_api_request(:invalid_request) do
+                  expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
+                end
+              end
+            end
+          end
+        end
+
+        context "for an existing customer" do
+          subject { build(:customer, :with_id, :with_card, :with_optional_params)}
+
+          before do
+            expect_api_request(:updated, :api_resource_id => subject.id) do
+              subject.save!
+            end
+          end
+
+          it "should update the remote customer" do
+            request_body["card"].should == subject.card
+            request_body["email"].should == subject.email
+            request_body["description"].should == subject.description
           end
         end
       end

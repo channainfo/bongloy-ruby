@@ -5,6 +5,14 @@ module Bongloy
         params[:card] = token
       end
 
+      def email=(email)
+        params[:email] = email
+      end
+
+      def description=(description)
+        params[:description] = description
+      end
+
       private
 
       def resources_path

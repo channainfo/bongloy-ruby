@@ -15,6 +15,10 @@ FactoryGirl.define do
     Bongloy::SpecHelpers::ApiHelpers.new.sample_customer_id(n)
   end
 
+  sequence :card_id do |n|
+    Bongloy::SpecHelpers::ApiHelpers.new.sample_card_id(n)
+  end
+
   factory :token, :class => Bongloy::ApiResource::Token do
     trait :with_id do
       invalid
@@ -39,6 +43,11 @@ FactoryGirl.define do
 
     trait :with_card do
       card { generate(:token_id) }
+    end
+
+    trait :with_optional_params do
+      email "someone@example.com"
+      description "some description"
     end
   end
 end

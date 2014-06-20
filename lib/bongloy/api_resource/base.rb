@@ -17,13 +17,22 @@ module Bongloy
       end
 
       def save!(headers = {})
-        self.params = persisted? ? client.update_resource(resources_path, api_key, params) : client.create_resource(resources_path, api_key, params, headers)
+        if persisted?
+          raise(::Bongloy::Error::Api::InvalidRequestError.new(
+            :message => "#{self.class.name} cannot be updated"
+          )) unless updatable?
+          client.update_resource(resource_path, api_key, params, headers)
+        else
+          self.params = client.create_resource(resources_path, api_key, params, headers)
+        end
         true
       end
 
       def retrieve!(query_params = {}, headers = {})
-        raise ::Bongloy::Error::Api::NotFoundError.new(:message => "No 'id' specified. You must specify an 'id' for this resource like this: #{self.class.name}.new(:id => <id>)") unless persisted?
-        self.params = client.show_resource("#{resources_path}/#{id}", api_key, query_params, headers)
+        raise(::Bongloy::Error::Api::NotFoundError.new(
+          :message => "No 'id' specified. You must specify an 'id' for this resource like this: #{self.class.name}.new(:id => <id>)"
+        )) unless persisted?
+        self.params = client.show_resource(resource_path, api_key, query_params, headers)
       end
 
       def params=(options)
@@ -35,6 +44,14 @@ module Bongloy
       end
 
       private
+
+      def resource_path
+        "#{resources_path}/#{id}"
+      end
+
+      def updatable?
+        true
+      end
 
       def persisted?
         !id.nil?

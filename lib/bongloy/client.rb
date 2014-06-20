@@ -18,6 +18,10 @@ module Bongloy
       do_request(:get, :query, path, api_key, params, headers)
     end
 
+    def update_resource(path, api_key, params = {}, headers = {})
+      do_request(:put, :body, path, api_key, params, headers)
+    end
+
     private
 
     def do_request(method, payload_key, path, api_key, params = {}, headers = {})
@@ -43,7 +47,7 @@ module Bongloy
           raise(::Bongloy::Error::Api::Base)
         end
       end
-      JSON.parse(response.body)
+      response.body ? JSON.parse(response.body) : {}
     end
 
     def authentication_headers(api_key)

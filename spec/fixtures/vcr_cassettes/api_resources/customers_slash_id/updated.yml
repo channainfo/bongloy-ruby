@@ -1,0 +1,44 @@
+---
+http_interactions:
+- request:
+    method: put
+    uri: <%= endpoint %>
+    body:
+      encoding: UTF-8
+      string: card=tok_2f0bec75c50ad7a96d4a7ecbac1f57cadd7d64d88d9d0d3a9a4143e87986872d&email=someone%40example.com&description=some%20description
+    headers:
+      Authorization:
+      - Bearer sk_test_790c5929ca876a5367318150285cb11e9b97509d0b9c1f5d29863b9e5fba52ab
+  response:
+    status:
+      code: 204
+      message: No Content
+    headers:
+      Date:
+      - Fri, 20 Jun 2014 09:17:33 GMT
+      Status:
+      - 204 No Content
+      Connection:
+      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Ua-Compatible:
+      - chrome=1
+      Location:
+      - http://localhost:3000/api/v1/customers/1
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 7a05a29b-3be2-4e4b-a8b9-62680daf1d1c
+      X-Runtime:
+      - '0.096991'
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version:
+  recorded_at: Fri, 20 Jun 2014 09:17:33 GMT
+recorded_with: VCR 2.5.0

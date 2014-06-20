@@ -12,13 +12,33 @@ module Bongloy
 
       it_should_behave_like "a bongloy api resource"
 
+      describe "#card=(card)" do
+        it "should set the card parameters" do
+          card_params = {"number" => "4242424242424242", "exp_month" => 12, "exp_year" => 2015}
+          subject.card = card_params
+          subject.params[:card].should == card_params
+        end
+      end
+
       describe "#save!(headers = {})" do
-        context "with invalid params" do
-          subject { build(:token, :invalid) }
+        context "for an existing token" do
+          subject { build(:token, :with_id) }
 
           it "should raise a Bongloy::Error::Api::InvalidRequestError" do
-            expect_api_request(:invalid_request) do
-              expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
+            expect { subject.save! }.to raise_error(
+              Bongloy::Error::Api::InvalidRequestError, "#{described_class.name} cannot be updated"
+            )
+          end
+        end
+
+        context "for a new token" do
+          context "with invalid params" do
+            subject { build(:token, :invalid) }
+
+            it "should raise a Bongloy::Error::Api::InvalidRequestError" do
+              expect_api_request(:invalid_request) do
+                expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
+              end
             end
           end
         end

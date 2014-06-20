@@ -27,6 +27,7 @@ require 'bongloy'
 
 token = Bongloy::ApiResource::Token.new
 token.api_key = "<your_api_key>"
+token.card = {:number=>"4242424242424242", :exp_month=>12, :exp_year=>2015}
 token.save!
 ```
 
