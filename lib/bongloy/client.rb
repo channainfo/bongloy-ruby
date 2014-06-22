@@ -22,6 +22,10 @@ module Bongloy
       do_request(stripe_mode? ? :post : :put, :body, path, api_key, params, headers)
     end
 
+    def api_key
+      stripe_mode? ? ENV["STRIPE_SECRET_KEY"] : ENV["BONGLOY_SECRET_KEY"]
+    end
+
     def stripe_mode?
       api_endpoint == ENV["STRIPE_API_ENDPOINT"]
     end

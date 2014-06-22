@@ -19,6 +19,14 @@ FactoryGirl.define do
     Bongloy::SpecHelpers::ApiHelpers.new.sample_card_id(n)
   end
 
+  factory :client, :class => Bongloy::Client do
+    skip_create
+
+    trait :stripe do
+      api_endpoint { ENV["STRIPE_API_ENDPOINT"] }
+    end
+  end
+
   factory :token, :class => Bongloy::ApiResource::Token do
     trait :with_id do
       invalid

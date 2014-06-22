@@ -13,7 +13,7 @@ module Bongloy
       def initialize(options = {})
         self.params = options
         self.id = params.delete(:id)
-        self.api_key = params.delete(:api_key) || ENV["BONGLOY_SECRET_KEY"]
+        self.api_key = params.delete(:api_key) || client.api_key
       end
 
       def save!(headers = {})
