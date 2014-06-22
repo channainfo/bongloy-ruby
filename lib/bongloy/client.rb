@@ -7,7 +7,7 @@ module Bongloy
     attr_accessor :api_endpoint
 
     def initialize(options = {})
-      self.api_endpoint = options[:api_endpoint] || ENV["BONGLOY_API_ENDPOINT"] || BONGLOY_API_ENDPOINT
+      self.api_endpoint = options[:api_endpoint] || (ENV["STRIPE_MODE"].to_i == 1 ? ENV["STRIPE_API_ENDPOINT"] : ENV["BONGLOY_API_ENDPOINT"]) || BONGLOY_API_ENDPOINT
     end
 
     def create_resource(path, api_key, params = {}, headers = {})
@@ -23,7 +23,7 @@ module Bongloy
     end
 
     def stripe_mode?
-      api_endpoint =~ /api.stripe.com/
+      api_endpoint == ENV["STRIPE_API_ENDPOINT"]
     end
 
     private
