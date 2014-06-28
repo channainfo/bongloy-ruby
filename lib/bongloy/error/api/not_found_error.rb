@@ -3,7 +3,7 @@ require_relative "base"
 module Bongloy
   module Error
     module Api
-      class NotFoundError < Base
+      class NotFoundError < ::Bongloy::Error::Api::Base
         attr_accessor :resource
 
         def initialize(options = {})

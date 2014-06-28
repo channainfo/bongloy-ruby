@@ -2,7 +2,7 @@ require_relative "base"
 
 module Bongloy
   module ApiResource
-    class Token < Base
+    class Token < ::Bongloy::ApiResource::Base
       def card=(card)
         params[:card] = card
       end
