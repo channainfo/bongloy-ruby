@@ -58,4 +58,7 @@ FactoryGirl.define do
       description "some description"
     end
   end
+
+  factory :charge, :class => Bongloy::ApiResource::Charge do
+  end
 end
