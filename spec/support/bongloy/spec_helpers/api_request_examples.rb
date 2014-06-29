@@ -12,6 +12,10 @@ module Bongloy
         )
       end
 
+      def request_body
+        WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.body)
+      end
+
       shared_examples_for "a bongloy api resource" do
         let(:additional_params) { { "expand" => ["default_card"] } }
         let(:custom_headers) { { "X-Foo" => "bar" } }
@@ -102,11 +106,37 @@ module Bongloy
           end
 
           context "for a new resource" do
+            context "with invalid params" do
+              subject { build(factory, :invalid) }
+
+              it "should raise a Bongloy::Error::Api::InvalidRequestError" do
+                expect_api_request(:invalid_request) do
+                  expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
+                end
+              end
+            end
+
             context "with valid params" do
               it "should return true" do
                 expect_api_request(:created) do
                   subject.save!.should == true
                   subject.id.should_not be_nil
+                end
+              end
+
+              context "passing optional params" do
+                subject { build(factory, :with_optional_params) }
+                let(:asserted_params) { subject.params }
+
+                before do
+                  asserted_params
+                  expect_api_request(:created) do
+                    subject.save!
+                  end
+                end
+
+                it "should send the additional params in the request" do
+                  request_body.should == asserted_params
                 end
               end
             end
@@ -124,6 +154,13 @@ module Bongloy
 
           context "specifying an id" do
             let(:subject) { described_class.new(:id => "replace_me_with_actual_resource_uuid") }
+
+            it "should try to find the resource by the given id" do
+              expect_api_request(:ok, :api_resource_id => subject.id) do
+                subject.retrieve!
+                subject.object.should == asserted_retrieved_object
+              end
+            end
 
             context "passing additional params" do
               it "should send these params in the query string" do

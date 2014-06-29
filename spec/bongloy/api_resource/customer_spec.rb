@@ -5,8 +5,9 @@ describe Bongloy::ApiResource::Customer do
 
   let(:api_request_helpers) { Bongloy::SpecHelpers::ApiRequestHelpers.new }
   let(:api_resource_endpoint) { :customers }
-
-  subject { build(:customer) }
+  let(:asserted_retrieved_object) { "customer" }
+  let(:factory) { :customer }
+  subject { build(factory) }
 
   it_should_behave_like "a bongloy api resource"
 
@@ -18,8 +19,6 @@ describe Bongloy::ApiResource::Customer do
   end
 
   describe "#save!(headers = {})" do
-    let(:request_body) { WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.body) }
-
     context "for a new customer" do
       context "when the customer has no card" do
         before do
@@ -34,7 +33,7 @@ describe Bongloy::ApiResource::Customer do
       end
 
       context "when the customer has a card which is" do
-        subject { build(:customer, :with_card) }
+        subject { build(:customer, :with_card, :card => "replace_me_with_a_valid_token") }
 
         context "valid" do
           before do
@@ -45,14 +44,6 @@ describe Bongloy::ApiResource::Customer do
 
           it "should have a default card" do
             subject.default_card.should_not be_nil
-          end
-        end
-
-        context "invalid" do
-          it "should raise a Bongloy::Error::Api::InvalidRequestError" do
-            expect_api_request(:invalid_request) do
-              expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
-            end
           end
         end
       end
@@ -71,17 +62,6 @@ describe Bongloy::ApiResource::Customer do
         request_body["card"].should == subject.card
         request_body["email"].should == subject.email
         request_body["description"].should == subject.description
-      end
-    end
-  end
-
-  describe "#retrieve!(query_params = {}, headers = {})" do
-    subject { build(:customer, :with_id, :id => "cus_replace_me_with_an_customer_id") }
-
-    it "should try to find the resource by the given id" do
-      expect_api_request(:ok, :api_resource_id => subject.id) do
-        subject.retrieve!
-        subject.object.should == "customer"
       end
     end
   end

@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: <%= endpoint %>
+    body:
+      encoding: UTF-8
+      string: card=tok_50415d300fd45f72475abc75392708dedcd7500c7a98a7a62e34411f4c8a664015
+    headers:
+      Authorization:
+      - Bearer sk_test_236103e5d6e3b35c613ef292e8b806a4997bdeece64813229d3d6cf7e50ce2a1
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Date:
+      - Sun, 29 Jun 2014 05:29:31 GMT
+      Status:
+      - 422 Unprocessable Entity
+      Connection:
+      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - ad67888e-0609-4d67-a682-1efe73a9267c
+      X-Runtime:
+      - '0.043861'
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: '{"errors":{"balance_transaction":["is invalid"],"token":["can''t be
+        blank"],"customer_object":["can''t be blank"],"amount":["can''t be blank","is
+        not a number"],"currency":["can''t be blank","is not included in the list"]}}'
+    http_version:
+  recorded_at: Sun, 29 Jun 2014 05:29:31 GMT
+recorded_with: VCR 2.9.2

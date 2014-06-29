@@ -5,8 +5,9 @@ describe Bongloy::ApiResource::Charge do
 
   let(:api_request_helpers) { Bongloy::SpecHelpers::ApiRequestHelpers.new }
   let(:api_resource_endpoint) { :charges }
-
-  subject { build(:charge) }
+  let(:asserted_retrieved_object) { "charge" }
+  let(:factory) { :charge }
+  subject { build(factory) }
 
   it_should_behave_like "a bongloy api resource"
 
@@ -14,6 +15,20 @@ describe Bongloy::ApiResource::Charge do
     it "should set the card parameter" do
       subject.card = "token"
       subject.params[:card].should == "token"
+    end
+  end
+
+  describe "#capture=(value)" do
+    it "should set the capture" do
+      subject.capture = false
+      subject.params[:capture].should == false
+    end
+  end
+
+  describe "#description=(value)" do
+    it "should set the description" do
+      subject.description = "some description"
+      subject.params[:description].should == "some description"
     end
   end
 
@@ -31,14 +46,10 @@ describe Bongloy::ApiResource::Charge do
     end
   end
 
-  describe "#retrieve!(query_params = {}, headers = {})" do
-    subject { build(:charge, :with_id, :id => "ch_replace_me_with_actual_charge_id") }
-
-    it "should try to find the resource by the given id" do
-      expect_api_request(:ok, :api_resource_id => subject.id) do
-        subject.retrieve!
-        subject.object.should == "charge"
-      end
+  describe "#save!(headers = {})" do
+    context "for an existing charge" do
+      subject { build(factory, :with_id) }
+      it_should_behave_like "a non updatable api resource"
     end
   end
 end

@@ -37,6 +37,8 @@ FactoryGirl.define do
       id { generate(:token_id) }
     end
 
+    trait :with_optional_params
+
     skip_create
     params { Bongloy::SpecHelpers::ApiHelpers.new.credit_card_token_params }
     initialize_with { new(params) }
@@ -61,13 +63,14 @@ FactoryGirl.define do
       email "someone@example.com"
       description "some description"
     end
+
+    trait :invalid do
+      with_card # the token will not be valid
+    end
   end
 
   factory :charge, :class => Bongloy::ApiResource::Charge do
     skip_create
-    with_card
-    amount 500
-    currency "usd"
 
     trait :with_id do
       id { generate(:charge_id) }
@@ -86,8 +89,11 @@ FactoryGirl.define do
     end
 
     trait :with_optional_params do
-      capture false
-      desription "some description"
+      capture "false"
+      description "some description"
     end
+
+    params { Bongloy::SpecHelpers::ApiHelpers.new.charge_params }
+    initialize_with { new(params) }
   end
 end

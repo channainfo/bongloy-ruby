@@ -13,7 +13,19 @@ module Bongloy
         params[:currency] = value
       end
 
+      def capture=(value)
+        params[:capture] = value
+      end
+
+      def description=(value)
+        params[:description] = value
+      end
+
       private
+
+      def updatable?
+        false
+      end
 
       def resources_path
         :charges
