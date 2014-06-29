@@ -19,6 +19,10 @@ FactoryGirl.define do
     Bongloy::SpecHelpers::ApiHelpers.new.sample_card_id(n)
   end
 
+  sequence :charge_id do |n|
+    Bongloy::SpecHelpers::ApiHelpers.new.sample_charge_id(n)
+  end
+
   factory :client, :class => Bongloy::Client do
     skip_create
 
@@ -60,5 +64,28 @@ FactoryGirl.define do
   end
 
   factory :charge, :class => Bongloy::ApiResource::Charge do
+    skip_create
+    with_card
+
+    trait :with_id do
+      id { generate(:charge_id) }
+    end
+
+    trait :with_card do
+      card { generate(:token_id) }
+    end
+
+    trait :without_card do
+      card nil
+    end
+
+    trait :with_customer do
+      customer { generate(:customer_id) }
+    end
+
+    trait :with_optional_params do
+      capture false
+      desription "some description"
+    end
   end
 end
