@@ -2,6 +2,13 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'bongloy'
 
 RSpec.configure do |config|
-  config.treat_symbols_as_metadata_keys_with_true_values = true
   Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
+
+  config.expect_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
+
+  config.mock_with :rspec do |mocks|
+    mocks.syntax = [:should, :expect]
+  end
 end
