@@ -66,6 +66,8 @@ FactoryGirl.define do
   factory :charge, :class => Bongloy::ApiResource::Charge do
     skip_create
     with_card
+    amount 500
+    currency "usd"
 
     trait :with_id do
       id { generate(:charge_id) }

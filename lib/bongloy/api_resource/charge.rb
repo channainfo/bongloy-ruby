@@ -5,6 +5,14 @@ module Bongloy
         params[:card] = token
       end
 
+      def amount=(value)
+        params[:amount] = value
+      end
+
+      def currency=(value)
+        params[:currency] = value
+      end
+
       private
 
       def resources_path

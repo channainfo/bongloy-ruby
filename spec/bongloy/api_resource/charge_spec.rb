@@ -16,4 +16,18 @@ describe Bongloy::ApiResource::Charge do
       subject.params[:card].should == "token"
     end
   end
+
+  describe "#amount=(value)" do
+    it "should set amount parameter" do
+      subject.amount = 1000
+      subject.params[:amount].should == 1000
+    end
+  end
+
+  describe "#currency=(value)" do
+    it "should set the currency parameter" do
+      subject.currency = "khr"
+      subject.params[:currency].should == "khr"
+    end
+  end
 end
