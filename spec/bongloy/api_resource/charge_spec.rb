@@ -30,4 +30,15 @@ describe Bongloy::ApiResource::Charge do
       subject.params[:currency].should == "khr"
     end
   end
+
+  describe "#retrieve!(query_params = {}, headers = {})" do
+    subject { build(:charge, :with_id, :id => "ch_replace_me_with_actual_charge_id") }
+
+    it "should try to find the resource by the given id" do
+      expect_api_request(:ok, :api_resource_id => subject.id) do
+        subject.retrieve!
+        subject.object.should == "charge"
+      end
+    end
+  end
 end

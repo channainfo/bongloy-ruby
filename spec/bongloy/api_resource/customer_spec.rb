@@ -76,8 +76,7 @@ describe Bongloy::ApiResource::Customer do
   end
 
   describe "#retrieve!(query_params = {}, headers = {})" do
-    # the account which the token belongs to must be the BONGLOY_SECRET_KEY
-    subject { build(:customer, :with_id, :id => "cus_replace_me_with_an_actual_token") }
+    subject { build(:customer, :with_id, :id => "cus_replace_me_with_an_customer_id") }
 
     it "should try to find the resource by the given id" do
       expect_api_request(:ok, :api_resource_id => subject.id) do
