@@ -32,14 +32,19 @@ FactoryGirl.define do
   end
 
   factory :token, :class => Bongloy::ApiResource::Token do
+    skip_create
+
     trait :with_id do
       invalid
       id { generate(:token_id) }
     end
 
+    trait :wing do
+      params { Bongloy::SpecHelpers::ApiHelpers.new.wing_card_token_params }
+    end
+
     trait :with_optional_params
 
-    skip_create
     params { Bongloy::SpecHelpers::ApiHelpers.new.credit_card_token_params }
     initialize_with { new(params) }
   end

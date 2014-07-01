@@ -7,6 +7,10 @@ module Bongloy
         params[:card] = card
       end
 
+      def wing_card=(card)
+        params[:wing_card] = card
+      end
+
       private
 
       def updatable?

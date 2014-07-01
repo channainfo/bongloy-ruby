@@ -19,10 +19,33 @@ describe Bongloy::ApiResource::Token do
     end
   end
 
+  describe "#wing_card=(card)" do
+    it "should set the Wing card paramters" do
+      card_params = {"account_number" => "1614", "pin" => "1234"}
+      subject.wing_card = card_params
+      subject.params[:wing_card].should == card_params
+    end
+  end
+
   describe "#save!(headers = {})" do
     context "for an existing token" do
       subject { build(:token, :with_id) }
       it_should_behave_like "a non updatable api resource"
+    end
+
+    context "for a new token" do
+      context "with a wing card" do
+        subject { build(:token, :wing) }
+        before do
+          expect_api_request(:created) do
+            subject.save!
+          end
+        end
+
+        it "should send wing card params" do
+          request_body.should have_key("wing_card")
+        end
+      end
     end
   end
 end
