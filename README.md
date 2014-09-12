@@ -52,6 +52,10 @@ token.api_key
 
 ## Usage
 
+### Request Parameters and CURL examples.
+
+The Bongloy API is described in detail with example CURL requests. See [this gist](https://gist.github.com/dwilkie/5aa1a63576ea5454821d)
+
 ## Tokens
 
 Tokens are Bongloy's representation of a Card. Normally you would use Bongloy Checkout to create tokens and then use them on the server side to create Charges or Customers. Tokens can also be created directly as shown below.
