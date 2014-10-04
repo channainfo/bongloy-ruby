@@ -54,7 +54,7 @@ token.api_key
 
 ### Request Parameters and CURL examples.
 
-The Bongloy API is described in detail with example CURL requests. See [this gist](https://gist.github.com/dwilkie/5aa1a63576ea5454821d)
+The Bongloy API is described in detail with example CURL requests. See [this gist](https://gist.github.com/dwilkie/fc6ff2328c58b6c5571a)
 
 ## Tokens
 
