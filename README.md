@@ -4,17 +4,15 @@ Consumes the [Bongloy API](http://bongloy.com)
 
 ## Installation
 
+This gem is still in beta. To install:
+
 Add this line to your application's Gemfile:
 
-    gem 'bongloy'
+    gem 'bongloy', :github => "dwilkie/bongloy-ruby"
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install bongloy
 
 ## Usage
 
