@@ -62,7 +62,7 @@ See also [Bongloy Charges API](https://gist.github.com/dwilkie/fc6ff2328c58b6c55
 
 See also [Bongloy Charges API](https://gist.github.com/dwilkie/fc6ff2328c58b6c5571a#creating-a-new-charge-charging-a-credit-or-wing-card)
 
-##### $5 USD charge, supplying a Card with no Customer
+##### Valid Request, $5 USD charge, supplying a Card with no Customer
 
 ```
 $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
@@ -92,7 +92,7 @@ charge.captured?
 # => true
 ```
 
-##### 10,000 KHR charge, supplying a Customer with no Card
+##### Valid Request, 10,000 KHR charge, supplying a Customer with no Card
 
 ```
 $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
@@ -122,7 +122,7 @@ charge.captured?
 # => true
 ```
 
-##### 100,000 KHR charge, supplying a Customer, insufficient funds
+##### Invalid Request, Insufficient Funds
 
 ```
 $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
@@ -471,8 +471,6 @@ See also [Bongloy Tokens API](https://gist.github.com/dwilkie/fc6ff2328c58b6c557
 $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 ```
 
-curl -d "card[number]=4242424242424242&card[exp_month]=12&card[exp_year]=2020&key=pk_test_f4cc494a6ee1d96ada04399f82b6328c70707eb1fa8fd17d60fa7d0a63920430" "https://bongloy-staging.herokuapp.com/api/v1/tokens"
-
 ```ruby
 require 'bongloy'
 
@@ -496,8 +494,6 @@ token.used?
 token.card
 # => {"exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "fingerprint"=>nil, "country"=>nil, "cvc_check"=>nil, "address_line1_check"=>nil, "address_zip_check"=>nil, "object"=>"card", "last4"=>"4242", "id"=>"card_714ffdd6fa9bb74b497cbf954fa80318b268c720176eca811d67431e9428161e", "created"=>1412492468, "customer"=>nil, "type"=>"visa"}
 ```
-
-curl -d "card[number]=5018188000383662&card[exp_month]=12&card[exp_year]=2020&card[cvc]=2008&key=pk_test_f4cc494a6ee1d96ada04399f82b6328c70707eb1fa8fd17d60fa7d0a63920430" "https://bongloy-staging.herokuapp.com/api/v1/tokens"
 
 ##### Valid request, Create a Wing Card Token
 
