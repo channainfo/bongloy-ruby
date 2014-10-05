@@ -1,5 +1,7 @@
 # Bongloy
 
+[![Build Status](https://travis-ci.org/dwilkie/bongloy-ruby.svg?branch=master)](https://travis-ci.org/dwilkie/bongloy-ruby)
+
 Consumes the [Bongloy API](http://bongloy.com)
 
 ## Installation
