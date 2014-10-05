@@ -52,7 +52,7 @@ token.api_key = "sk_test_my_secret_api_key"
 # => "sk_test_my_secret_api_key"
 ```
 
-The following examples should actually work if you provide the correct credentials. Replace `sk_test_my_secret_api_key` with your own Secret API Key or use the sample [Secret API Key](https://gist.github.com/dwilkie/fc6ff2328c58b6c5571a#test-account-secret-api-key). Where applicable replace `pk_test_my_publishable_api_key` with your own Publishable API Key or use the sample [Publishable API Key](https://gist.github.com/dwilkie/fc6ff2328c58b6c5571a#test-account-publishable-api-key)
+The following examples should actually work if you provide the correct credentials. Replace `sk_test_my_secret_api_key` with your own Secret API Key or use the sample [Secret API Key](https://gist.github.com/dwilkie/fc6ff2328c58b6c5571a#test-account-secret-api-key).
 
 ### Charges
 
