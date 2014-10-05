@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/dwilkie/bongloy-ruby.svg?branch=master)](https://travis-ci.org/dwilkie/bongloy-ruby)
 
-Consumes the [Bongloy API](http://bongloy.com)
+Consumes the [Bongloy API](https://gist.github.com/dwilkie/fc6ff2328c58b6c5571a)
 
 ## Installation
 
