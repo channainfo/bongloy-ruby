@@ -2,7 +2,7 @@ module Bongloy
   class Client
     require 'httparty'
 
-    BONGLOY_API_ENDPOINT = "https://api.bongloy.com/v1"
+    BONGLOY_API_ENDPOINT = "https://bongloy-staging.herokuapp.com/api/v1"
 
     attr_accessor :api_endpoint
 
@@ -46,13 +46,13 @@ module Bongloy
     def handle_response(response)
       unless response.success?
         if response.code == 401
-          raise(::Bongloy::Error::Api::AuthenticationError)
-        elsif response.code == 422 || response.code == 400
-          raise(::Bongloy::Error::Api::InvalidRequestError.new(:message => response.body))
+          raise(::Bongloy::Error::Api::AuthenticationError.new(:code => response.code))
+        elsif response.code == 422
+          raise(::Bongloy::Error::Api::InvalidRequestError.new(:code => response.code, :errors => response.body))
         elsif response.code == 404
-          raise(::Bongloy::Error::Api::NotFoundError.new(:resource => response.request.path.to_s))
+          raise(::Bongloy::Error::Api::NotFoundError.new(:code => response.code, :resource => response.request.path.to_s))
         else
-          raise(::Bongloy::Error::Api::Base)
+          raise(::Bongloy::Error::Api::BaseError.new(:code => response.code))
         end
       end
       response.body ? JSON.parse(response.body) : {}

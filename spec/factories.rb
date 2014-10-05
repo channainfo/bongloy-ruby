@@ -31,16 +31,20 @@ FactoryGirl.define do
     end
   end
 
+  factory :error, :class => Bongloy::Error::Api::BaseError do
+    skip_create
+
+    factory :invalid_request_error,          :class => Bongloy::Error::Api::InvalidRequestError
+    factory :authentication_error,           :class => Bongloy::Error::Api::AuthenticationError
+    factory :not_found_error,                :class => Bongloy::Error::Api::NotFoundError
+  end
+
   factory :token, :class => Bongloy::ApiResource::Token do
     skip_create
 
     trait :with_id do
       invalid
       id { generate(:token_id) }
-    end
-
-    trait :wing do
-      params { Bongloy::SpecHelpers::ApiHelpers.new.wing_card_token_params }
     end
 
     trait :with_optional_params

@@ -1,12 +1,14 @@
-require_relative "base"
+require_relative "base_error"
 
 module Bongloy
   module Error
     module Api
-      class AuthenticationError < ::Bongloy::Error::Api::Base
+      class AuthenticationError < ::Bongloy::Error::Api::BaseError
 
-        def message
-          @message || "No valid API key provided."
+        private
+
+        def default_message_string
+          "No valid API key provided."
         end
       end
     end

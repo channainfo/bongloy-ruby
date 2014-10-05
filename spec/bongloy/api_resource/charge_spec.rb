@@ -11,10 +11,17 @@ describe Bongloy::ApiResource::Charge do
 
   it_should_behave_like "a bongloy api resource"
 
-  describe "#card=(token)" do
+  describe "#card=(token_id)" do
     it "should set the card parameter" do
-      subject.card = "token"
-      subject.params[:card].should == "token"
+      subject.card = "tok_my_token"
+      subject.params[:card].should == "tok_my_token"
+    end
+  end
+
+  describe "#customer=(customer_id)" do
+    it "should set the customer parameter" do
+      subject.customer = "cus_my_customer_id"
+      subject.params[:customer].should == "cus_my_customer_id"
     end
   end
 

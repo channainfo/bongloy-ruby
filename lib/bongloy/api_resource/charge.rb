@@ -1,8 +1,12 @@
 module Bongloy
   module ApiResource
     class Charge < ::Bongloy::ApiResource::Base
-      def card=(token)
-        params[:card] = token
+      def card=(token_id)
+        params[:card] = token_id
+      end
+
+      def customer=(customer_id)
+        params[:customer] = customer_id
       end
 
       def amount=(value)

@@ -1,12 +1,14 @@
-require_relative "base"
+require_relative "base_error"
 
 module Bongloy
   module Error
     module Api
-      class InvalidRequestError < ::Bongloy::Error::Api::Base
+      class InvalidRequestError < ::Bongloy::Error::Api::BaseError
 
-        def message
-          @message || "Bad Request."
+        private
+
+        def default_message_string
+          "Request could not be processed."
         end
       end
     end
