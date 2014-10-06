@@ -3,11 +3,12 @@ module Bongloy
     require 'httparty'
 
     BONGLOY_API_ENDPOINT = "https://bongloy-staging.herokuapp.com/api/v1"
+    STRIPE_API_ENDPOINT = "https://api.stripe.com/v1"
 
     attr_accessor :api_endpoint
 
     def initialize(options = {})
-      self.api_endpoint = options[:api_endpoint] || (ENV["STRIPE_MODE"].to_i == 1 ? ENV["STRIPE_API_ENDPOINT"] : ENV["BONGLOY_API_ENDPOINT"]) || BONGLOY_API_ENDPOINT
+      self.api_endpoint = options[:api_endpoint] || (ENV["STRIPE_MODE"].to_i == 1 ? (ENV["STRIPE_API_ENDPOINT"] || STRIPE_API_ENDPOINT) : (ENV["BONGLOY_API_ENDPOINT"] || BONGLOY_API_ENDPOINT))
     end
 
     def create_resource(path, api_key, params = {}, headers = {})
@@ -47,7 +48,7 @@ module Bongloy
       unless response.success?
         if response.code == 401
           raise(::Bongloy::Error::Api::AuthenticationError.new(:code => response.code))
-        elsif response.code == 422
+        elsif response.code == 400 || response.code == 422
           raise(::Bongloy::Error::Api::InvalidRequestError.new(:code => response.code, :errors => response.body))
         elsif response.code == 404
           raise(::Bongloy::Error::Api::NotFoundError.new(:code => response.code, :resource => response.request.path.to_s))

@@ -114,6 +114,20 @@ module Bongloy
                   expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
                 end
               end
+
+              context "in stripe mode" do
+                let(:env_helpers) { Bongloy::SpecHelpers::EnvHelpers.new }
+
+                before do
+                  env_helpers.stub_env("STRIPE_MODE", "1")
+                end
+
+                it "should rails a Bongloy::Error::Api::InvalidRequestError" do
+                  expect_api_request(:invalid_request, :stripe_mode => true) do
+                    expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
+                  end
+                end
+              end
             end
 
             context "with valid params" do
