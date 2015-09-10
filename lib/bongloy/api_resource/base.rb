@@ -39,6 +39,11 @@ module Bongloy
         @params = Attributes[options]
       end
 
+      def params(options = {})
+        type = @params[:type]
+        options[:root] && type ? {type => @params} : @params
+      end
+
       def id
         @id || params[:id]
       end

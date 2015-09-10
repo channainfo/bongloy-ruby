@@ -60,24 +60,32 @@ module Bongloy
           end
         end
 
-        describe "#params" do
-          let(:sample_params) {  }
+        describe "#params(options = {})" do
+          let(:sample_params) { {"foo" => "bar"} }
+          let(:options) { {} }
+          let(:result) { subject.params(options) }
 
-          before do
-            subject.params = {"foo" => "bar"}
-          end
+          before { subject.params = sample_params }
 
-          it "should behave like a normal getter/setter" do
-            expect(subject.params).to eq({"foo" => "bar"})
-          end
+          it { expect(result).to eq(sample_params) }
+          it { expect(subject.foo).to eq("bar") }
 
-          it "should set up method readers and writers for the params" do
-            expect(subject.foo).to eq("bar")
+          context "passing(:root => true)" do
+            let(:options) { {:root => true} }
+
+            context "does not include a 'type' key" do
+              it { expect(result).to eq(sample_params) }
+            end
+
+            context "includes a 'type' key" do
+              let(:sample_params) { { "type" => "token" } }
+              it { expect(result).to eq(sample_params["type"] => sample_params) }
+            end
           end
 
           it "should have indifferent access" do
-            expect(subject.params["foo"]).to eq("bar")
-            expect(subject.params[:foo]).to eq("bar")
+            expect(result["foo"]).to eq(sample_params["foo"])
+            expect(result[:foo]).to eq(sample_params["foo"])
           end
         end
 
