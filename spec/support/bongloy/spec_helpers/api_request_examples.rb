@@ -73,13 +73,13 @@ module Bongloy
           context "passing(:root => true)" do
             let(:options) { {:root => true} }
 
-            context "does not include a 'type' key" do
+            context "does not include a 'object' key" do
               it { expect(result).to eq(sample_params) }
             end
 
-            context "includes a 'type' key" do
-              let(:sample_params) { { "type" => "token" } }
-              it { expect(result).to eq(sample_params["type"] => sample_params) }
+            context "includes a 'object' key" do
+              let(:sample_params) { { "object" => "token" } }
+              it { expect(result).to eq(sample_params["object"] => sample_params) }
             end
           end
 
