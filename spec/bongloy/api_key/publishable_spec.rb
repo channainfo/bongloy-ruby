@@ -9,16 +9,17 @@ describe Bongloy::ApiKey::Publishable do
   subject { build(:publishable_api_key) }
 
   describe "#valid?" do
+    context "api_key is nil" do
+      subject { build(:publishable_api_key, :api_key => nil) }
+      it { is_expected.not_to be_valid }
+    end
+
     context "given the api_key is valid" do
-      it "should return true" do
-        expect_api_request(:invalid_request) { expect(subject).to be_valid }
-      end
+      it { expect_api_request(:invalid_request) { expect(subject).to be_valid } }
     end
 
     context "given the api_key is invalid" do
-      it "should return false" do
-        expect_api_request(:unauthorized) { expect(subject).not_to be_valid }
-      end
+      it { expect_api_request(:unauthorized) { expect(subject).not_to be_valid } }
     end
   end
 end

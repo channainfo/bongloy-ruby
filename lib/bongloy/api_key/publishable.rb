@@ -8,6 +8,12 @@ module Bongloy
       end
 
       def valid?
+        !!api_key && remote_valid?
+      end
+
+      private
+
+      def remote_valid?
         begin
           Bongloy::ApiResource::Token.new(:api_key => api_key).save!
         rescue Bongloy::Error::Api::InvalidRequestError
