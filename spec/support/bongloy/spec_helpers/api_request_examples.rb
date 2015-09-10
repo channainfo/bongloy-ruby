@@ -21,11 +21,11 @@ module Bongloy
         let(:custom_headers) { { "X-Foo" => "bar" } }
 
         def assert_additional_params!
-          WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.uri.query).should == additional_params
+          expect(WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.uri.query)).to eq(additional_params)
         end
 
         def assert_custom_headers!
-          WebMock.requests.last.headers.should include(custom_headers)
+          expect(WebMock.requests.last.headers).to include(custom_headers)
         end
 
         describe "#initialize(options = {})" do
@@ -35,28 +35,28 @@ module Bongloy
             subject { described_class.new(:api_key => api_key) }
 
             it "should set the api_key" do
-              subject.api_key.should == api_key
+              expect(subject.api_key).to eq(api_key)
             end
           end
 
           context "without passing an :api_key" do
             it "should set the api_key to ENV['BONGLOY_SECRET_KEY']" do
-              subject.api_key.should == ENV["BONGLOY_SECRET_KEY"]
+              expect(subject.api_key).to eq(ENV["BONGLOY_SECRET_KEY"])
             end
           end
         end
 
         describe "#id" do
           it "should behave like a normal getter/setter" do
-            subject.id.should be_nil
+            expect(subject.id).to be_nil
             subject.id = 1
-            subject.id.should == 1
+            expect(subject.id).to eq(1)
           end
 
           it "should look in the params hash for the id" do
-            subject.id.should be_nil
+            expect(subject.id).to be_nil
             subject.params = {:id => 1}
-            subject.id.should == 1
+            expect(subject.id).to eq(1)
           end
         end
 
@@ -68,22 +68,22 @@ module Bongloy
           end
 
           it "should behave like a normal getter/setter" do
-            subject.params.should == {"foo" => "bar"}
+            expect(subject.params).to eq({"foo" => "bar"})
           end
 
           it "should set up method readers and writers for the params" do
-            subject.foo.should == "bar"
+            expect(subject.foo).to eq("bar")
           end
 
           it "should have indifferent access" do
-            subject.params["foo"].should == "bar"
-            subject.params[:foo].should == "bar"
+            expect(subject.params["foo"]).to eq("bar")
+            expect(subject.params[:foo]).to eq("bar")
           end
         end
 
         describe "#client" do
           it "should return a new client object" do
-            subject.client.should be_a(Bongloy::Client)
+            expect(subject.client).to be_a(Bongloy::Client)
           end
         end
 
@@ -133,8 +133,8 @@ module Bongloy
             context "with valid params" do
               it "should return true" do
                 expect_api_request(:created) do
-                  subject.save!.should == true
-                  subject.id.should_not be_nil
+                  expect(subject.save!).to eq(true)
+                  expect(subject.id).not_to be_nil
                 end
               end
 
@@ -150,7 +150,7 @@ module Bongloy
                 end
 
                 it "should send the additional params in the request" do
-                  request_body.should == asserted_params
+                  expect(request_body).to eq(asserted_params)
                 end
               end
             end
@@ -172,7 +172,7 @@ module Bongloy
             it "should try to find the resource by the given id" do
               expect_api_request(:ok, :api_resource_id => subject.id) do
                 subject.retrieve!
-                subject.object.should == asserted_retrieved_object
+                expect(subject.object).to eq(asserted_retrieved_object)
               end
             end
 

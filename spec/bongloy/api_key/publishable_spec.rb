@@ -11,13 +11,13 @@ describe Bongloy::ApiKey::Publishable do
   describe "#valid?" do
     context "given the api_key is valid" do
       it "should return true" do
-        expect_api_request(:invalid_request) { subject.should be_valid }
+        expect_api_request(:invalid_request) { expect(subject).to be_valid }
       end
     end
 
     context "given the api_key is invalid" do
       it "should return false" do
-        expect_api_request(:unauthorized) { subject.should_not be_valid }
+        expect_api_request(:unauthorized) { expect(subject).not_to be_valid }
       end
     end
   end

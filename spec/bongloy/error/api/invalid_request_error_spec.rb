@@ -7,7 +7,7 @@ describe Bongloy::Error::Api::InvalidRequestError do
 
   describe "#message" do
     it "should have a default message" do
-      subject.message.should =~ /Request could not be processed./
+      expect(subject.message).to match(/Request could not be processed./)
     end
   end
 end

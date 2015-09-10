@@ -7,7 +7,7 @@ describe Bongloy::Error::Api::AuthenticationError do
 
   describe "#message" do
     it "should have a default message" do
-      subject.message.should =~ /No valid API key provided./
+      expect(subject.message).to match(/No valid API key provided./)
     end
   end
 end

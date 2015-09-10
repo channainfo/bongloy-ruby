@@ -14,7 +14,7 @@ describe Bongloy::ApiResource::Customer do
   describe "#card=(token)" do
     it "should set the card parameter" do
       subject.card = "token"
-      subject.params[:card].should == "token"
+      expect(subject.params[:card]).to eq("token")
     end
   end
 
@@ -28,7 +28,7 @@ describe Bongloy::ApiResource::Customer do
         end
 
         it "should not have a default card" do
-          subject.default_card.should be_nil
+          expect(subject.default_card).to be_nil
         end
       end
 
@@ -43,7 +43,7 @@ describe Bongloy::ApiResource::Customer do
           end
 
           it "should have a default card" do
-            subject.default_card.should_not be_nil
+            expect(subject.default_card).not_to be_nil
           end
         end
       end
@@ -59,9 +59,9 @@ describe Bongloy::ApiResource::Customer do
       end
 
       it "should update the remote customer" do
-        request_body["card"].should == subject.card
-        request_body["email"].should == subject.email
-        request_body["description"].should == subject.description
+        expect(request_body["card"]).to eq(subject.card)
+        expect(request_body["email"]).to eq(subject.email)
+        expect(request_body["description"]).to eq(subject.description)
       end
     end
   end

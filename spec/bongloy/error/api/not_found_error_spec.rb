@@ -8,13 +8,13 @@ describe Bongloy::Error::Api::NotFoundError do
 
   describe "#message" do
     it "should have a default" do
-      subject.message.should =~ /No such resource: #{subject.resource}/
+      expect(subject.message).to match(/No such resource: #{subject.resource}/)
     end
   end
 
   describe "#to_hash" do
     it "should contain the resource" do
-      subject.to_hash.should have_key("resource")
+      expect(subject.to_hash).to have_key("resource")
     end
   end
 end

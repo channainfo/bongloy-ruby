@@ -15,7 +15,7 @@ describe Bongloy::ApiResource::Token do
     it "should set the card parameters" do
       card_params = {"number" => "4242424242424242", "exp_month" => 12, "exp_year" => 2015}
       subject.card = card_params
-      subject.params[:card].should == card_params
+      expect(subject.params[:card]).to eq(card_params)
     end
   end
 
@@ -35,7 +35,7 @@ describe Bongloy::ApiResource::Token do
         end
 
         it "should send card params" do
-          request_body.should have_key("card")
+          expect(request_body).to have_key("card")
         end
       end
     end

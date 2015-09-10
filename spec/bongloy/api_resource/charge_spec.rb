@@ -14,42 +14,42 @@ describe Bongloy::ApiResource::Charge do
   describe "#card=(token_id)" do
     it "should set the card parameter" do
       subject.card = "tok_my_token"
-      subject.params[:card].should == "tok_my_token"
+      expect(subject.params[:card]).to eq("tok_my_token")
     end
   end
 
   describe "#customer=(customer_id)" do
     it "should set the customer parameter" do
       subject.customer = "cus_my_customer_id"
-      subject.params[:customer].should == "cus_my_customer_id"
+      expect(subject.params[:customer]).to eq("cus_my_customer_id")
     end
   end
 
   describe "#capture=(value)" do
     it "should set the capture" do
       subject.capture = false
-      subject.params[:capture].should == false
+      expect(subject.params[:capture]).to eq(false)
     end
   end
 
   describe "#description=(value)" do
     it "should set the description" do
       subject.description = "some description"
-      subject.params[:description].should == "some description"
+      expect(subject.params[:description]).to eq("some description")
     end
   end
 
   describe "#amount=(value)" do
     it "should set amount parameter" do
       subject.amount = 1000
-      subject.params[:amount].should == 1000
+      expect(subject.params[:amount]).to eq(1000)
     end
   end
 
   describe "#currency=(value)" do
     it "should set the currency parameter" do
       subject.currency = "khr"
-      subject.params[:currency].should == "khr"
+      expect(subject.params[:currency]).to eq("khr")
     end
   end
 

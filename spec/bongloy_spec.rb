@@ -2,6 +2,6 @@ require 'spec_helper'
 
 describe Bongloy do
   it "should have a version number" do
-    Bongloy::VERSION.should_not be_nil
+    expect(Bongloy::VERSION).not_to be_nil
   end
 end
