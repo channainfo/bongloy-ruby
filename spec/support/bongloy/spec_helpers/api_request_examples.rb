@@ -116,10 +116,9 @@ module Bongloy
               end
 
               context "in stripe mode" do
-                let(:env_helpers) { Bongloy::SpecHelpers::EnvHelpers.new }
-
                 before do
-                  env_helpers.stub_env("STRIPE_MODE", "1")
+                  allow(ENV).to receive(:[]).and_call_original
+                  allow(ENV).to receive(:[]).with("STRIPE_MODE").and_return("1")
                 end
 
                 it "should rails a Bongloy::Error::Api::InvalidRequestError" do
