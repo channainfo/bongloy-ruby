@@ -31,7 +31,7 @@ module Bongloy
 
         def default_message
           parsed_errors = errors && JSON.parse(errors)["error"]
-          parsed_errors ? parsed_errors.map { |attribute, messages| full_error_messages(attribute, messages)}.join(", ") : message_string
+          parsed_errors ? parsed_errors.map { |attribute, messages| full_error_messages(attribute, [messages].flatten)}.join(", ") : message_string
         end
 
         def default_message_with_code

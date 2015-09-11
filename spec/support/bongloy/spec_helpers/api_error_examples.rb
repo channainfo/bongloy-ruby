@@ -7,7 +7,7 @@ module Bongloy
       shared_examples_for "an api error" do
         subject { build(factory_name) }
 
-        let(:sample_errors) { "{\"error\":{\"amount\":[\"can't be blank\",\"must be greater than 0\"],\"base\":\"something happened\"}}" }
+        let(:sample_errors) { "{\"error\":{\"type\":\"invalid_request_error\",\"amount\":[\"can't be blank\",\"must be greater than 0\"],\"base\":\"something happened\"}}" }
 
         describe "#initialize(options = {})" do
           subject { build(factory_name, :code => "321", :errors => sample_errors) }
@@ -23,36 +23,22 @@ module Bongloy
 
           context "with errors" do
             subject { build(factory_name, :errors => sample_errors) }
-
-            it "should generate the message from the errors" do
-              expect(message).to match(/amount can't be blank, amount must be greater than 0, something happened/)
-            end
+            it { expect(message).to match(/amount can't be blank, amount must be greater than 0, something happened/) }
           end
 
           context "without errors" do
-            it "should have a default" do
-              expect(message).not_to be_nil
-            end
-
-            it "should return a string" do
-              expect(message).to be_a(String)
-            end
+            it { expect(message).not_to be_nil }
+            it { expect(message).to be_a(String) }
           end
 
           context "with code" do
             subject { build(factory_name, :code => "401") }
-
-            it "should include the error code" do
-              expect(message).to include(subject.code)
-            end
+            it { expect(message).to include(subject.code) }
           end
 
           context "with a custom message" do
             subject { build(factory_name, :message => "foo") }
-
-            it "should override the default message with the custom message" do
-              expect(message).to include("foo")
-            end
+            it { expect(message).to include("foo") }
           end
         end
 
