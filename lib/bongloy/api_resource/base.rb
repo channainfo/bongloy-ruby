@@ -3,7 +3,7 @@ require_relative "../client"
 module Bongloy
   module ApiResource
     class Base
-      attr_accessor :api_key, :id, :params
+      attr_accessor :api_key, :id, :params, :headers
 
       class Attributes < Hash
         include Hashie::Extensions::MethodAccess
@@ -12,11 +12,13 @@ module Bongloy
 
       def initialize(options = {})
         self.params = options
+        self.headers = params.delete(:headers) || {}
         self.id = params.delete(:id)
         self.api_key = params.delete(:api_key) || client.api_key
       end
 
-      def save!(headers = {})
+      def save!(request_headers = {})
+        headers = request_headers.merge!(self.headers)
         if persisted?
           raise(::Bongloy::Error::Api::InvalidRequestError.new(
             :message => "#{self.class.name} cannot be updated"
@@ -28,11 +30,11 @@ module Bongloy
         true
       end
 
-      def retrieve!(query_params = {}, headers = {})
+      def retrieve!(query_params = {}, request_headers = {})
         raise(::Bongloy::Error::Api::NotFoundError.new(
           :message => "No 'id' specified. You must specify an 'id' for this resource like this: #{self.class.name}.new(:id => <id>)"
         )) unless persisted?
-        self.params = client.show_resource(resource_path, api_key, query_params, headers)
+        self.params = client.show_resource(resource_path, api_key, query_params, request_headers.merge!(self.headers))
       end
 
       def params=(options)

@@ -19,30 +19,27 @@ module Bongloy
       shared_examples_for "a bongloy api resource" do
         let(:additional_params) { { "expand" => ["default_card"] } }
         let(:custom_headers) { { "X-Foo" => "bar" } }
+        let(:resource_headers) { { "X-Resource-Header" => "baz" } }
 
         def assert_additional_params!
           expect(WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.uri.query)).to eq(additional_params)
         end
 
         def assert_custom_headers!
-          expect(WebMock.requests.last.headers).to include(custom_headers)
+          headers = WebMock.requests.last.headers
+          expect(headers).to include(custom_headers)
+          expect(headers).to include(resource_headers)
         end
 
         describe "#initialize(options = {})" do
           context "passing an :api_key" do
             let(:api_key) { "pk_test_12345" }
-
             subject { described_class.new(:api_key => api_key) }
-
-            it "should set the api_key" do
-              expect(subject.api_key).to eq(api_key)
-            end
+            it { expect(subject.api_key).to eq(api_key) }
           end
 
           context "without passing an :api_key" do
-            it "should set the api_key to ENV['BONGLOY_SECRET_KEY']" do
-              expect(subject.api_key).to eq(ENV["BONGLOY_SECRET_KEY"])
-            end
+            it { expect(subject.api_key).to eq(ENV["BONGLOY_SECRET_KEY"]) }
           end
         end
 
@@ -58,6 +55,11 @@ module Bongloy
             subject.params = {:id => 1}
             expect(subject.id).to eq(1)
           end
+        end
+
+        describe "#headers" do
+          it { expect(subject.headers).to eq({}) }
+          it { expect(described_class.new(:headers => {"Foo" => "Bar"}).headers).to eq({"Foo" => "Bar"}) }
         end
 
         describe "#params(options = {})" do
@@ -90,12 +92,10 @@ module Bongloy
         end
 
         describe "#client" do
-          it "should return a new client object" do
-            expect(subject.client).to be_a(Bongloy::Client)
-          end
+          it { expect(subject.client).to be_a(Bongloy::Client) }
         end
 
-        describe "#save!(headers = {})" do
+        describe "#save!(request_headers = {})" do
           context "with an invalid key" do
             it "should raise a Bongloy::Error::Api::AuthentiationError" do
               expect_api_request(:unauthorized) do
@@ -105,6 +105,8 @@ module Bongloy
           end
 
           context "passing custom headers" do
+            before { subject.headers = resource_headers }
+
             it "should send these headers in the request" do
               expect_api_request(:created) do
                 subject.save!(custom_headers)
@@ -164,13 +166,10 @@ module Bongloy
           end
         end
 
-        describe "#retrieve!(query_params = {}, headers = {})" do
+        describe "#retrieve!(query_params = {}, request_headers = {})" do
           context "without first specifying an id" do
             let(:subject) { described_class.new }
-
-            it "should raise a Bongloy::Error::Api::NotFoundError" do
-              expect { subject.retrieve! }.to raise_error(Bongloy::Error::Api::NotFoundError)
-            end
+            it { expect { subject.retrieve! }.to raise_error(Bongloy::Error::Api::NotFoundError) }
           end
 
           context "specifying an id" do
@@ -193,6 +192,8 @@ module Bongloy
             end
 
             context "passing custom headers" do
+              before { subject.headers = resource_headers }
+
               it "should send these headers in the request" do
                 expect_api_request(:ok, :api_resource_id => subject.id) do
                   subject.retrieve!({}, custom_headers)
