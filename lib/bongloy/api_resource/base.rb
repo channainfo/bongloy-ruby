@@ -11,14 +11,16 @@ module Bongloy
       end
 
       def initialize(options = {})
-        self.params = options
+        self.params = options.dup
         self.headers = params.delete(:headers) || {}
+        self.bongloy_account = params.delete(:bongloy_account)
         self.id = params.delete(:id)
         self.api_key = params.delete(:api_key) || client.api_key
       end
 
       def save!(request_headers = {})
-        headers = request_headers.merge!(self.headers)
+        headers = build_request_headers(request_headers)
+
         if persisted?
           raise(::Bongloy::Error::Api::InvalidRequestError.new(
             :message => "#{self.class.name} cannot be updated"
@@ -34,7 +36,9 @@ module Bongloy
         raise(::Bongloy::Error::Api::NotFoundError.new(
           :message => "No 'id' specified. You must specify an 'id' for this resource like this: #{self.class.name}.new(:id => <id>)"
         )) unless persisted?
-        self.params = client.show_resource(resource_path, api_key, query_params, request_headers.merge!(self.headers))
+        self.params = client.show_resource(
+          resource_path, api_key, query_params, build_request_headers(request_headers)
+        )
       end
 
       def params=(options)
@@ -53,7 +57,23 @@ module Bongloy
         @client ||= ::Bongloy::Client.new
       end
 
+      def bongloy_account
+        headers[:bongloy_account]
+      end
+
+      def bongloy_account=(value)
+        self.headers[:bongloy_account] = value if value
+      end
+
+      def headers=(value)
+        @headers = value.dup
+      end
+
       private
+
+      def build_request_headers(request_headers = {})
+        request_headers.merge(self.headers)
+      end
 
       def resource_path
         "#{resources_path}/#{id}"

@@ -18,17 +18,24 @@ module Bongloy
 
       shared_examples_for "a bongloy api resource" do
         let(:additional_params) { { "expand" => ["default_card"] } }
-        let(:custom_headers) { { "X-Foo" => "bar" } }
+        let(:request_headers) { { "X-Foo" => "bar" } }
         let(:resource_headers) { { "X-Resource-Header" => "baz" } }
+        let(:bongloy_account) { "acct_1234" }
 
         def assert_additional_params!
           expect(WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.uri.query)).to eq(additional_params)
         end
 
-        def assert_custom_headers!
-          headers = WebMock.requests.last.headers
-          expect(headers).to include(custom_headers)
-          expect(headers).to include(resource_headers)
+        def setup_header_example
+          subject.headers = resource_headers
+          subject.bongloy_account = bongloy_account
+        end
+
+        def assert_headers!
+          actual_headers = WebMock.requests.last.headers
+          expect(actual_headers).to include(request_headers)
+          expect(actual_headers).to include(resource_headers)
+          expect(actual_headers).to include({"Bongloy-Account" => bongloy_account})
         end
 
         describe "#initialize(options = {})" do
@@ -55,6 +62,12 @@ module Bongloy
             subject.params = {:id => 1}
             expect(subject.id).to eq(1)
           end
+        end
+
+        describe "#bongloy_account" do
+          it { expect(subject.bongloy_account).to eq(nil) }
+          it { expect(described_class.new(:bongloy_account => bongloy_account).bongloy_account).to eq(bongloy_account) }
+          it { subject.bongloy_account = bongloy_account; expect(subject.headers[:bongloy_account]).to eq(bongloy_account) }
         end
 
         describe "#headers" do
@@ -104,14 +117,14 @@ module Bongloy
             end
           end
 
-          context "passing custom headers" do
-            before { subject.headers = resource_headers }
+          context "passing request headers" do
+            before { setup_header_example }
 
             it "should send these headers in the request" do
               expect_api_request(:created) do
-                subject.save!(custom_headers)
+                subject.save!(request_headers)
               end
-              assert_custom_headers!
+              assert_headers!
             end
           end
 
@@ -158,9 +171,7 @@ module Bongloy
                   end
                 end
 
-                it "should send the additional params in the request" do
-                  expect(request_body).to eq(asserted_params)
-                end
+                it { expect(request_body).to eq(asserted_params) }
               end
             end
           end
@@ -191,14 +202,14 @@ module Bongloy
               end
             end
 
-            context "passing custom headers" do
-              before { subject.headers = resource_headers }
+            context "passing request headers" do
+              before { setup_header_example }
 
               it "should send these headers in the request" do
                 expect_api_request(:ok, :api_resource_id => subject.id) do
-                  subject.retrieve!({}, custom_headers)
+                  subject.retrieve!({}, request_headers)
                 end
-                assert_custom_headers!
+                assert_headers!
               end
             end
           end
