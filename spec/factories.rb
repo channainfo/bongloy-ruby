@@ -64,8 +64,8 @@ FactoryGirl.define do
       id { generate(:customer_id) }
     end
 
-    trait :with_card do
-      card { generate(:token_id) }
+    trait :with_source do
+      source { generate(:token_id) }
     end
 
     trait :with_optional_params do
@@ -74,7 +74,7 @@ FactoryGirl.define do
     end
 
     trait :invalid do
-      with_card # the token will not be valid
+      with_source # the token will not be valid
     end
   end
 
@@ -85,12 +85,12 @@ FactoryGirl.define do
       id { generate(:charge_id) }
     end
 
-    trait :with_card do
-      card { generate(:token_id) }
+    trait :with_source do
+      source { generate(:token_id) }
     end
 
-    trait :without_card do
-      card nil
+    trait :without_source do
+      source nil
     end
 
     trait :with_customer do

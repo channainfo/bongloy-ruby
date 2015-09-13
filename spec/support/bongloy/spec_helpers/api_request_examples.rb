@@ -17,7 +17,7 @@ module Bongloy
       end
 
       shared_examples_for "a bongloy api resource" do
-        let(:additional_params) { { "expand" => ["default_card"] } }
+        let(:additional_params) { { "expand" => ["default_source"] } }
         let(:request_headers) { { "X-Foo" => "bar" } }
         let(:resource_headers) { { "X-Resource-Header" => "baz" } }
         let(:bongloy_account) { "acct_1234" }

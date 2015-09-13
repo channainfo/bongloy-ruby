@@ -46,7 +46,7 @@ http_interactions:
       - chunked
     body:
       encoding: UTF-8
-      string: '{"id":"cus_ee0a03b3cd494ae12511011a433c6603c8d41a4627fbd371c9b1af113f928f88","livemode":false,"email":null,"description":null,"object":"customer","default_card":null,"created":1402219624}'
+      string: '{"id":"cus_ee0a03b3cd494ae12511011a433c6603c8d41a4627fbd371c9b1af113f928f88","livemode":false,"email":null,"description":null,"object":"customer","default_source":null,"created":1402219624}'
     http_version:
   recorded_at: Fri, 20 Jun 2014 04:57:39 GMT
 recorded_with: VCR 2.5.0

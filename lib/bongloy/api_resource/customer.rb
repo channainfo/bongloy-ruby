@@ -1,8 +1,8 @@
 module Bongloy
   module ApiResource
     class Customer < ::Bongloy::ApiResource::Base
-      def card=(token)
-        params[:card] = token
+      def source=(token)
+        params[:source] = token
       end
 
       def email=(email)

@@ -44,7 +44,7 @@ http_interactions:
       - chunked
     body:
       encoding: UTF-8
-      string: '{"id":"cus_50977aca05fa440f2d5827302c6ebcd589eac9cecfc75f92fccf59959da43ec1","livemode":false,"email":null,"description":null,"object":"customer","default_card":{"id":"card_239da91ccb1d5a549f9d5367f3059abe","exp_month":12,"exp_year":2015,"name":"John
+      string: '{"id":"cus_50977aca05fa440f2d5827302c6ebcd589eac9cecfc75f92fccf59959da43ec1","livemode":false,"email":null,"description":null,"object":"customer","default_source":{"id":"card_239da91ccb1d5a549f9d5367f3059abe","exp_month":12,"exp_year":2015,"name":"John
         Citizen","address_line1":"cc Address Line 1","address_line2":"cc Address Line
         2","address_city":"Melbourne","address_state":"Victoria","address_zip":"3001","address_country":"Australia","fingerprint":null,"country":null,"cvc_check":null,"address_line1_check":null,"address_zip_check":null,"object":"credit_card","last4":"4242","created":1400392130,"type":"visa","customer":"cus_50977aca05fa440f2d5827302c6ebcd589eac9cecfc75f92fccf59959da43ec1"},"created":1402223006}'
     http_version:

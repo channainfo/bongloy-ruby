@@ -11,11 +11,9 @@ describe Bongloy::ApiResource::Charge do
 
   it_should_behave_like "a bongloy api resource"
 
-  describe "#card=(token_id)" do
-    it "should set the card parameter" do
-      subject.card = "tok_my_token"
-      expect(subject.params[:card]).to eq("tok_my_token")
-    end
+  describe "#source=(source_id)" do
+    before { subject.source = "tok_my_token" }
+    it { expect(subject.params[:source]).to eq("tok_my_token") }
   end
 
   describe "#customer=(customer_id)" do
