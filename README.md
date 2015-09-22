@@ -10,11 +10,15 @@ This gem is still in beta. To install:
 
 Add this line to your application's Gemfile:
 
-    gem 'bongloy', :github => "dwilkie/bongloy-ruby"
+```ruby
+gem 'bongloy', :github => "dwilkie/bongloy-ruby"
+```
 
 And then execute:
 
-    $ bundle
+```
+$ bundle
+```
 
 ## Usage
 
@@ -24,7 +28,7 @@ The [Bongloy API](https://bongloy.com/documentation#bongloy_api_reference) is de
 
 ### Authentication
 
-The environment variable `BONGLOY_SECRET_KEY` can be set to automatically configure Bongloy with your Secret API Key. For example:
+The environment variable `BONGLOY_SECRET_KEY` can be set to automatically configure Bongloy with your [API Key](https://bongloy.com/documentation/#bongloy_api_reference_authentication). For example:
 
 ```
 $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
@@ -38,7 +42,7 @@ token.api_key
 # => "sk_test_my_secret_api_key"
 ```
 
-Alternatively you can set your API Key each time when you create an API Resource. For example:
+Alternatively you can set your [API Key](https://bongloy.com/documentation/#bongloy_api_reference_authentication) each time when you create an API Resource. For example:
 
 ```
 $ bundle exec irb
