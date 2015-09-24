@@ -7,20 +7,8 @@ FactoryGirl.define do
     params { {} }
   end
 
-  sequence :token_id do |n|
-    Bongloy::SpecHelpers::ApiHelpers.new.sample_token_id(n)
-  end
-
-  sequence :customer_id do |n|
-    Bongloy::SpecHelpers::ApiHelpers.new.sample_customer_id(n)
-  end
-
-  sequence :card_id do |n|
-    Bongloy::SpecHelpers::ApiHelpers.new.sample_card_id(n)
-  end
-
-  sequence :charge_id do |n|
-    Bongloy::SpecHelpers::ApiHelpers.new.sample_charge_id(n)
+  sequence :uuid do
+    Bongloy::SpecHelpers::ApiHelpers.new.generate_uuid
   end
 
   factory :client, :class => Bongloy::Client do
@@ -44,10 +32,11 @@ FactoryGirl.define do
 
     trait :with_id do
       invalid
-      id { generate(:token_id) }
+      id { generate(:uuid) }
     end
 
-    trait :with_optional_params
+    trait :with_optional_params do
+    end
 
     params { Bongloy::SpecHelpers::ApiHelpers.new.credit_card_token_params }
     initialize_with { new(params) }
@@ -60,12 +49,14 @@ FactoryGirl.define do
   end
 
   factory :customer, :class => Bongloy::ApiResource::Customer do
+    skip_create
+
     trait :with_id do
-      id { generate(:customer_id) }
+      id { generate(:uuid) }
     end
 
     trait :with_source do
-      source { generate(:token_id) }
+      source { generate(:uuid) }
     end
 
     trait :with_optional_params do
@@ -78,15 +69,39 @@ FactoryGirl.define do
     end
   end
 
+  factory :card, :class => Bongloy::ApiResource::Card do
+    skip_create
+    association :customer, :factory => [:customer, :with_id]
+    with_source
+
+    params { {} }
+
+    initialize_with { new(customer, params) }
+
+    trait :with_id do
+      id { generate(:uuid) }
+    end
+
+    trait :with_source do
+      source { generate(:uuid) }
+    end
+
+    trait :invalid
+
+    trait :with_optional_params do
+      params { Bongloy::SpecHelpers::ApiHelpers.new.card_params }
+    end
+  end
+
   factory :charge, :class => Bongloy::ApiResource::Charge do
     skip_create
 
     trait :with_id do
-      id { generate(:charge_id) }
+      id { generate(:uuid) }
     end
 
     trait :with_source do
-      source { generate(:token_id) }
+      source { generate(:uuid) }
     end
 
     trait :without_source do
@@ -94,7 +109,7 @@ FactoryGirl.define do
     end
 
     trait :with_customer do
-      customer { generate(:customer_id) }
+      customer { generate(:uuid) }
     end
 
     trait :with_optional_params do

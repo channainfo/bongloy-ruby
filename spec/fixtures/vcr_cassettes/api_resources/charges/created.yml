@@ -5,21 +5,15 @@ http_interactions:
     uri: <%= endpoint %>
     body:
       encoding: UTF-8
-      string: card=tok_3e00cd6399e6129574550f5cab42adf40463dd2f40dde67eff3c9330d8840a2a&amount=500&currency=usd
+      string: amount=400&currency=usd&source=c86c2354-6109-415a-8faf-4cef745253ec
     headers:
       Authorization:
-      - Bearer sk_test_236103e5d6e3b35c613ef292e8b806a4997bdeece64813229d3d6cf7e50ce2a1
+      - Bearer sk_test_8656cb4cec9ca0d9a8560467a42b531b7d941fba93cb583e182614aceaf94b89
   response:
     status:
       code: 201
       message: Created
     headers:
-      Date:
-      - Sun, 29 Jun 2014 04:22:59 GMT
-      Status:
-      - 201 Created
-      Connection:
-      - close
       X-Frame-Options:
       - SAMEORIGIN
       X-Xss-Protection:
@@ -27,22 +21,22 @@ http_interactions:
       X-Content-Type-Options:
       - nosniff
       Location:
-      - http://localhost:3000/
+      - http://localhost:3000/api/v1/charges/6840bf2c-87e2-44dd-a7b1-1b9723ca5484
       Content-Type:
       - application/json; charset=utf-8
       Etag:
-      - '"926f4d2bb85e3d4e814f401044b70b7d"'
+      - W/"e96e7ee1e8502fe90c568690328ca8c9"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 34ac738c-6a5e-4768-ab9d-983f4825f739
+      - 54fa1969-2cf9-4037-a998-b96cf5e236a9
       X-Runtime:
-      - '0.055478'
+      - '0.283933'
       Transfer-Encoding:
       - chunked
     body:
       encoding: UTF-8
-      string: '{"id":"ch_234280126ba96cdbdf9137c87d68802c7663cc942ca39d6270bd1379071dd30d","amount":500,"currency":"usd","livemode":false,"description":null,"object":"charge","captured":true,"created":1404015779,"customer":null,"balance_transaction":"txn_55db81d08e194ed7e60f2ba80b8cdddbe7255f09c112c928ca39a3d61f50dc7a","card":{"id":"card_7ef7e4c3479548ee38a50b5c73ad094a5cc48a4108cabe9f4a39290bd6d2738f","exp_month":12,"exp_year":2015,"name":null,"address_line1":null,"address_line2":null,"address_city":null,"address_state":null,"address_zip":null,"address_country":null,"fingerprint":null,"country":null,"cvc_check":null,"address_line1_check":null,"address_zip_check":null,"object":"credit_card","last4":"4242","created":1404015471,"type":"visa","customer":null}}'
+      string: '{"id":"6840bf2c-87e2-44dd-a7b1-1b9723ca5484","currency":"USD","livemode":false,"description":null,"object":"charge","captured":true,"created":1443091073,"amount":400,"customer":null,"balance_transaction":"c52ee055-cc6e-459d-a410-d7e3bd50d436","source":{"id":"29c599a0-dff1-4e0a-a774-70fc2aa2b6a8","exp_month":9,"exp_year":2015,"name":null,"address_line1":null,"address_line2":null,"address_city":null,"address_state":null,"address_zip":null,"address_country":null,"brand":"visa","fingerprint":null,"country":null,"cvc_check":null,"address_line1_check":null,"address_zip_check":null,"object":"card","last4":"4242","created":1443091031,"customer":null}}'
     http_version:
-  recorded_at: Sun, 29 Jun 2014 04:22:59 GMT
-recorded_with: VCR 2.9.2
+  recorded_at: Thu, 24 Sep 2015 10:37:53 GMT
+recorded_with: VCR 2.9.3

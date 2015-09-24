@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: <%= endpoint %>
+    body:
+      encoding: UTF-8
+      string: source=tok_50415d300fd45f72475abc75392708dedcd7500c7a98a7a62e34411f4c8a66401
+    headers:
+      Authorization:
+      - Bearer sk_test_236103e5d6e3b35c613ef292e8b806a4997bdeece64813229d3d6cf7e50ce2a1
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Cache-Control:
+      - no-store
+      Pragma:
+      - no-cache
+      Www-Authenticate:
+      - Bearer realm="Doorkeeper", error="invalid_token", error_description="The access
+        token is invalid"
+      Content-Type:
+      - text/html
+      X-Request-Id:
+      - 85f95ae7-db1c-4e8a-a811-7b76ec20d036
+      X-Runtime:
+      - '0.226643'
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version:
+  recorded_at: Tue, 22 Sep 2015 13:31:18 GMT
+recorded_with: VCR 2.9.3

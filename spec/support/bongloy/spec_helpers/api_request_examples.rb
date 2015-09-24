@@ -7,7 +7,9 @@ module Bongloy
       def expect_api_request(request_type, options = {}, &block)
         api_request_helpers.expect_api_request(
           {
-            :api_resource_endpoint => api_resource_endpoint, :request_type => request_type
+            :api_resource_endpoint => api_resource_endpoint,
+            :cassette_dir => cassette_dir,
+            :request_type => request_type
           }.merge(options), &block
         )
       end
@@ -38,10 +40,15 @@ module Bongloy
           expect(actual_headers).to include({"Bongloy-Account" => bongloy_account})
         end
 
-        describe "#initialize(options = {})" do
+        def set_stripe_mode
+          allow(ENV).to receive(:[]).and_call_original
+          allow(ENV).to receive(:[]).with("STRIPE_MODE").and_return("1")
+        end
+
+        describe "#initialize(params = {})" do
           context "passing an :api_key" do
             let(:api_key) { "pk_test_12345" }
-            subject { described_class.new(:api_key => api_key) }
+            subject { build(factory, :api_key => api_key) }
             it { expect(subject.api_key).to eq(api_key) }
           end
 
@@ -51,28 +58,19 @@ module Bongloy
         end
 
         describe "#id" do
-          it "should behave like a normal getter/setter" do
-            expect(subject.id).to be_nil
-            subject.id = 1
-            expect(subject.id).to eq(1)
-          end
-
-          it "should look in the params hash for the id" do
-            expect(subject.id).to be_nil
-            subject.params = {:id => 1}
-            expect(subject.id).to eq(1)
-          end
+          it { expect(subject.id).to eq(nil); subject.id = 1; expect(subject.id).to eq(1) }
+          it { expect(subject.id).to eq(nil); subject.params = {:id => 1}; expect(subject.id).to eq(1) }
         end
 
         describe "#bongloy_account" do
           it { expect(subject.bongloy_account).to eq(nil) }
-          it { expect(described_class.new(:bongloy_account => bongloy_account).bongloy_account).to eq(bongloy_account) }
+          it { expect(build(factory, :bongloy_account => bongloy_account).bongloy_account).to eq(bongloy_account) }
           it { subject.bongloy_account = bongloy_account; expect(subject.headers[:bongloy_account]).to eq(bongloy_account) }
         end
 
         describe "#headers" do
           it { expect(subject.headers).to eq({}) }
-          it { expect(described_class.new(:headers => {"Foo" => "Bar"}).headers).to eq({"Foo" => "Bar"}) }
+          it { expect(build(factory, :headers => {"Foo" => "Bar"}).headers).to eq({"Foo" => "Bar"}) }
         end
 
         describe "#params(options = {})" do
@@ -109,66 +107,81 @@ module Bongloy
         end
 
         describe "#save!(request_headers = {})" do
+          let(:request_options) { {} }
+
+          def setup_scenario
+          end
+
+          before do
+            setup_scenario
+          end
+
           context "with an invalid key" do
-            it "should raise a Bongloy::Error::Api::AuthentiationError" do
-              expect_api_request(:unauthorized) do
+            def assert_unauthorized_request!
+              expect_api_request(:unauthorized, request_options) do
                 expect { subject.save! }.to raise_error(Bongloy::Error::Api::AuthenticationError)
               end
             end
+
+            it { assert_unauthorized_request! }
           end
 
           context "passing request headers" do
-            before { setup_header_example }
-
-            it "should send these headers in the request" do
-              expect_api_request(:created) do
-                subject.save!(request_headers)
-              end
-              assert_headers!
+            def setup_scenario
+              setup_header_example
             end
+
+            before do
+              expect_api_request(:created) { subject.save!(request_headers) }
+            end
+
+            it { assert_headers! }
           end
 
           context "for a new resource" do
             context "with invalid params" do
               subject { build(factory, :invalid) }
 
-              it "should raise a Bongloy::Error::Api::InvalidRequestError" do
-                expect_api_request(:invalid_request) do
+              def assert_invalid_request!
+                expect_api_request(:invalid_request, request_options) do
                   expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
                 end
               end
 
+              it { assert_invalid_request! }
+
               context "in stripe mode" do
-                before do
-                  allow(ENV).to receive(:[]).and_call_original
-                  allow(ENV).to receive(:[]).with("STRIPE_MODE").and_return("1")
+                let(:request_options) { { :stripe_mode => true } }
+
+                def setup_scenario
+                  set_stripe_mode
                 end
 
-                it "should rails a Bongloy::Error::Api::InvalidRequestError" do
-                  expect_api_request(:invalid_request, :stripe_mode => true) do
-                    expect { subject.save! }.to raise_error(Bongloy::Error::Api::InvalidRequestError)
-                  end
-                end
+                it { assert_invalid_request! }
               end
             end
 
             context "with valid params" do
-              it "should return true" do
-                expect_api_request(:created) do
-                  expect(subject.save!).to eq(true)
-                  expect(subject.id).not_to be_nil
-                end
+              let(:result) { expect_api_request(:created, request_options) { subject.save! } }
+
+              def assert_created!
+                expect(result).to eq(true)
+                expect(subject.id).not_to eq(nil)
               end
+
+              def setup_scenario
+                result
+              end
+
+              it { assert_created! }
 
               context "passing optional params" do
                 subject { build(factory, :with_optional_params) }
                 let(:asserted_params) { subject.params }
 
-                before do
+                def setup_scenario
                   asserted_params
-                  expect_api_request(:created) do
-                    subject.save!
-                  end
+                  super
                 end
 
                 it { expect(request_body).to eq(asserted_params) }
@@ -179,38 +192,40 @@ module Bongloy
 
         describe "#retrieve!(query_params = {}, request_headers = {})" do
           context "without first specifying an id" do
-            let(:subject) { described_class.new }
+            let(:subject) { build(factory) }
             it { expect { subject.retrieve! }.to raise_error(Bongloy::Error::Api::NotFoundError) }
           end
 
           context "specifying an id" do
-            let(:subject) { described_class.new(:id => "replace_me_with_actual_resource_uuid") }
+            let(:subject) { build(factory, :with_id, :id => "replace_me_with_valid_id") }
+            let(:request_options) { {} }
+            let(:query_params) { {} }
 
-            it "should try to find the resource by the given id" do
-              expect_api_request(:ok, :api_resource_id => subject.id) do
-                subject.retrieve!
-                expect(subject.object).to eq(asserted_retrieved_object)
+            def setup_scenario
+            end
+
+            before do
+              setup_scenario
+              expect_api_request(:ok, {:api_resource_id => subject.id}.merge(request_options)) do
+                subject.retrieve!(query_params, request_headers)
               end
             end
 
+            it { expect(subject.object).to eq(asserted_retrieved_object) }
+
             context "passing additional params" do
-              it "should send these params in the query string" do
-                expect_api_request(:ok, :api_resource_id => subject.id, :match_requests_on => [:method, :host, :path]) do
-                  subject.retrieve!(additional_params)
-                end
-                assert_additional_params!
-              end
+              let(:request_options) { { :match_requests_on => [:method, :host, :path] } }
+              let(:query_params) { additional_params }
+
+              it { assert_additional_params! }
             end
 
             context "passing request headers" do
-              before { setup_header_example }
-
-              it "should send these headers in the request" do
-                expect_api_request(:ok, :api_resource_id => subject.id) do
-                  subject.retrieve!({}, request_headers)
-                end
-                assert_headers!
+              def setup_scenario
+                setup_header_example
               end
+
+              it { assert_headers! }
             end
           end
         end

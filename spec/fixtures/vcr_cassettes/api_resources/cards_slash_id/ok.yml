@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: <%= endpoint %>
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - Bearer sk_test_688a27ffd40b3261e0bef2025a57b164beba71a89fe16a9a6ac5e3c24c039aa7
+      X-Foo:
+      - bar
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"a7ba55e77c1d1bea736c5342edfb514a"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 18e89356-079e-4eb0-85fb-2321c6b7da5d
+      X-Runtime:
+      - '0.115324'
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: '{"exp_month":9,"exp_year":2015,"name":null,"address_line1":null,"address_line2":null,"address_city":null,"address_state":null,"address_zip":null,"address_country":null,"brand":"visa","fingerprint":null,"country":null,"cvc_check":null,"address_line1_check":null,"address_zip_check":null,"object":"card","last4":"4242","id":"card_d751a437448925670dfb83ca96530219576d28b6aa17bbb07f473659ff021925","created":1442913501,"customer":"cus_14b62901522fa5785ba47f7d2f49c41c16bffbd36faabd4d6105c7eea54b36e8"}'
+    http_version:
+  recorded_at: Tue, 22 Sep 2015 13:52:56 GMT
+recorded_with: VCR 2.9.3

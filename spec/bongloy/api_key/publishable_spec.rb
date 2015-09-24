@@ -5,6 +5,7 @@ describe Bongloy::ApiKey::Publishable do
 
   let(:api_request_helpers) { Bongloy::SpecHelpers::ApiRequestHelpers.new }
   let(:api_resource_endpoint) { :tokens }
+  let(:cassette_dir) { api_resource_endpoint }
 
   subject { build(:publishable_api_key) }
 

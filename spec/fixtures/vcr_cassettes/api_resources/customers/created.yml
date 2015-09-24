@@ -8,43 +8,35 @@ http_interactions:
       string: ''
     headers:
       Authorization:
-      - Bearer sk_test_790c5929ca876a5367318150285cb11e9b97509d0b9c1f5d29863b9e5fba52ab
+      - Bearer sk_test_8656cb4cec9ca0d9a8560467a42b531b7d941fba93cb583e182614aceaf94b89
   response:
     status:
       code: 201
       message: Created
     headers:
-      Date:
-      - Sun, 08 Jun 2014 09:27:04 GMT
-      Status:
-      - 201 Created
-      Connection:
-      - close
       X-Frame-Options:
       - SAMEORIGIN
       X-Xss-Protection:
       - 1; mode=block
       X-Content-Type-Options:
       - nosniff
-      X-Ua-Compatible:
-      - chrome=1
       Location:
-      - http://localhost:3000/
+      - http://localhost:3000/api/v1/customers/b4e80ee4-5911-46db-a322-6e64c7f1ec1f
       Content-Type:
       - application/json; charset=utf-8
       Etag:
-      - '"178170d1c2738e0ee9f18b3988f53ef9"'
+      - W/"768469126b70a27bd1d2eb76c493fcbf"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 6599243f-78ef-4f9f-aca0-abf39bdaa55a
+      - 681af57b-46f6-475e-961c-6f9255740a8e
       X-Runtime:
-      - '0.041897'
+      - '0.058253'
       Transfer-Encoding:
       - chunked
     body:
       encoding: UTF-8
-      string: '{"id":"cus_ee0a03b3cd494ae12511011a433c6603c8d41a4627fbd371c9b1af113f928f88","livemode":false,"email":null,"description":null,"object":"customer","default_source":null,"created":1402219624}'
+      string: '{"id":"b4e80ee4-5911-46db-a322-6e64c7f1ec1f","livemode":false,"email":null,"description":null,"object":"customer","default_source":null,"created":1443087879}'
     http_version:
-  recorded_at: Sun, 08 Jun 2014 09:27:04 GMT
-recorded_with: VCR 2.5.0
+  recorded_at: Thu, 24 Sep 2015 09:44:39 GMT
+recorded_with: VCR 2.9.3

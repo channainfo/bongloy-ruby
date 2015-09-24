@@ -5,48 +5,38 @@ http_interactions:
     uri: <%= endpoint %>
     body:
       encoding: UTF-8
-      string: card=tok_392129823bd27ab10ee75666e3029603
+      string: source=8caf7fe6-1dee-4846-90d4-dadf0f978c9f
     headers:
       Authorization:
-      - Bearer sk_test_790c5929ca876a5367318150285cb11e9b97509d0b9c1f5d29863b9e5fba52ab
+      - Bearer sk_test_8656cb4cec9ca0d9a8560467a42b531b7d941fba93cb583e182614aceaf94b89
   response:
     status:
       code: 201
       message: Created
     headers:
-      Date:
-      - Sun, 08 Jun 2014 10:23:26 GMT
-      Status:
-      - 201 Created
-      Connection:
-      - close
       X-Frame-Options:
       - SAMEORIGIN
       X-Xss-Protection:
       - 1; mode=block
       X-Content-Type-Options:
       - nosniff
-      X-Ua-Compatible:
-      - chrome=1
       Location:
-      - http://localhost:3000/
+      - http://localhost:3000/api/v1/customers/88399e25-246d-4f8d-9b41-50ec8a03fb9d
       Content-Type:
       - application/json; charset=utf-8
       Etag:
-      - '"5b60549d92eb1f838d3eb93b9a3e3bb6"'
+      - W/"6ed2fec5f694b4906487ae40dc2e77ef"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - aa4a00aa-77a3-4f7d-becc-81faf29b0afb
+      - 411f497b-d696-4cb6-ab80-947441ce5f5f
       X-Runtime:
-      - '0.100951'
+      - '0.075298'
       Transfer-Encoding:
       - chunked
     body:
       encoding: UTF-8
-      string: '{"id":"cus_50977aca05fa440f2d5827302c6ebcd589eac9cecfc75f92fccf59959da43ec1","livemode":false,"email":null,"description":null,"object":"customer","default_source":{"id":"card_239da91ccb1d5a549f9d5367f3059abe","exp_month":12,"exp_year":2015,"name":"John
-        Citizen","address_line1":"cc Address Line 1","address_line2":"cc Address Line
-        2","address_city":"Melbourne","address_state":"Victoria","address_zip":"3001","address_country":"Australia","fingerprint":null,"country":null,"cvc_check":null,"address_line1_check":null,"address_zip_check":null,"object":"credit_card","last4":"4242","created":1400392130,"type":"visa","customer":"cus_50977aca05fa440f2d5827302c6ebcd589eac9cecfc75f92fccf59959da43ec1"},"created":1402223006}'
+      string: '{"id":"88399e25-246d-4f8d-9b41-50ec8a03fb9d","livemode":false,"email":null,"description":null,"object":"customer","default_source":{"id":"0969b1fb-15ac-4b6f-af7e-8f0e4271e913","exp_month":9,"exp_year":2015,"name":null,"address_line1":null,"address_line2":null,"address_city":null,"address_state":null,"address_zip":null,"address_country":null,"brand":"visa","fingerprint":null,"country":null,"cvc_check":null,"address_line1_check":null,"address_zip_check":null,"object":"card","last4":"4242","created":1443087592,"customer":"88399e25-246d-4f8d-9b41-50ec8a03fb9d"},"created":1443087879}'
     http_version:
-  recorded_at: Sun, 08 Jun 2014 10:23:26 GMT
-recorded_with: VCR 2.5.0
+  recorded_at: Thu, 24 Sep 2015 09:44:39 GMT
+recorded_with: VCR 2.9.3

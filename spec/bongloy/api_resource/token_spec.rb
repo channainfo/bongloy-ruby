@@ -6,20 +6,19 @@ describe Bongloy::ApiResource::Token do
   let(:api_request_helpers) { Bongloy::SpecHelpers::ApiRequestHelpers.new }
   let(:api_resource_endpoint) { :tokens }
   let(:asserted_retrieved_object) { "token" }
+  let(:cassette_dir) { api_resource_endpoint }
   let(:factory) { :token }
   subject { build(factory) }
 
   it_should_behave_like "a bongloy api resource"
 
   describe "#card=(card)" do
-    it "should set the card parameters" do
-      card_params = {"number" => "4242424242424242", "exp_month" => 12, "exp_year" => 2015}
-      subject.card = card_params
-      expect(subject.params[:card]).to eq(card_params)
-    end
+    let(:card_params) { {"number" => "4242424242424242", "exp_month" => 12, "exp_year" => 2015} }
+    before { subject.card = card_params }
+    it { expect(subject.params[:card]).to eq(card_params) }
   end
 
-  describe "#save!(headers = {})" do
+  describe "#save!(request_headers = {})" do
     context "for an existing token" do
       subject { build(:token, :with_id) }
       it_should_behave_like "a non updatable api resource"
@@ -28,15 +27,8 @@ describe Bongloy::ApiResource::Token do
     context "for a new token" do
       context "with a card" do
         subject { build(:token) }
-        before do
-          expect_api_request(:created) do
-            subject.save!
-          end
-        end
-
-        it "should send card params" do
-          expect(request_body).to have_key("card")
-        end
+        before { expect_api_request(:created) { subject.save! } }
+        it { expect(request_body).to have_key("card") }
       end
     end
   end

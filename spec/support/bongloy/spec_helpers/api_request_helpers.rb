@@ -15,11 +15,12 @@ module Bongloy
 
         api_resource_endpoint = request_options.delete(:api_resource_endpoint)
         api_resource_id = request_options.delete(:api_resource_id)
+        cassette_sub_dir = request_options.delete(:cassette_dir)
         cassette_suffix = :slash_id if api_resource_id
         request_type = request_options.delete(:request_type)
 
         cassette = request_options.delete(:cassette) || [
-          cassette_dir, [api_resource_endpoint, cassette_suffix].compact.join("_"), request_type.to_s
+          cassette_dir, [cassette_sub_dir || api_resource_endpoint, cassette_suffix].compact.join("_"), request_type.to_s
         ].compact.join("/")
 
         cassette_options = {

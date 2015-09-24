@@ -5,7 +5,7 @@ http_interactions:
     uri: <%= endpoint %>
     body:
       encoding: UTF-8
-      string: source=e6589869-109f-4c8f-b8b7-048199c02bc2&email=someone%40example.com&description=some%20description
+      string: name=John%20Citizen&address_line1=cc%20Address%20Line%201&address_line2=cc%20Address%20Line%202&address_city=Melbourne&address_state=Victoria&address_zip=3001&address_country=Australia&exp_month=12&exp_year=2016
     headers:
       Authorization:
       - Bearer sk_test_8656cb4cec9ca0d9a8560467a42b531b7d941fba93cb583e182614aceaf94b89
@@ -21,16 +21,16 @@ http_interactions:
       X-Content-Type-Options:
       - nosniff
       Location:
-      - http://localhost:3000/api/v1/customers/b4e80ee4-5911-46db-a322-6e64c7f1ec1f
+      - http://localhost:3000/api/v1/customers/b4e80ee4-5911-46db-a322-6e64c7f1ec1f/payment_sources/71cec2c6-4244-4f7b-97d3-50d2508282e8
       Cache-Control:
       - no-cache
       X-Request-Id:
-      - 17e54b92-59c7-49f4-a50c-0de0dfa4bfd2
+      - ec8552c1-e4c3-41f4-b3d8-973695cefc52
       X-Runtime:
-      - '0.296563'
+      - '0.052346'
     body:
       encoding: UTF-8
       string: ''
     http_version:
-  recorded_at: Thu, 24 Sep 2015 10:02:37 GMT
+  recorded_at: Thu, 24 Sep 2015 10:14:02 GMT
 recorded_with: VCR 2.9.3
