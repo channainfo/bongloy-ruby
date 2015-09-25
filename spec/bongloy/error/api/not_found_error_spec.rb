@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Bongloy::Error::Api::NotFoundError do
   let(:factory_name) { :not_found_error }
-  subject { build(factory_name, :resource => "/api/v1/charges/ch_does_not_exist") }
+  subject { build(factory_name, :resource => "/api/v1/charges/charge_does_not_exist") }
 
   it_should_behave_like "an api error"
 

@@ -71,7 +71,7 @@ FactoryGirl.define do
 
   factory :card, :class => Bongloy::ApiResource::Card do
     skip_create
-    association :customer, :factory => [:customer, :with_id]
+    customer { generate(:uuid) }
     with_source
 
     params { {} }

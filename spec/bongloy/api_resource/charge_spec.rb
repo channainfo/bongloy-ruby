@@ -13,13 +13,13 @@ describe Bongloy::ApiResource::Charge do
   it_should_behave_like "a bongloy api resource"
 
   describe "#source=(source_id)" do
-    before { subject.source = "tok_my_token" }
-    it { expect(subject.params[:source]).to eq("tok_my_token") }
+    before { subject.source = "token_uuid" }
+    it { expect(subject.params[:source]).to eq("token_uuid") }
   end
 
   describe "#customer=(customer_id)" do
-    before { subject.customer = "cus_my_customer_id" }
-    it { expect(subject.params[:customer]).to eq("cus_my_customer_id") }
+    before { subject.customer = "my_customer_id" }
+    it { expect(subject.params[:customer]).to eq("my_customer_id") }
   end
 
   describe "#capture=(value)" do
