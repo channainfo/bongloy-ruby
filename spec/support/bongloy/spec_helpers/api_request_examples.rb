@@ -19,6 +19,7 @@ module Bongloy
       end
 
       shared_examples_for "a bongloy api resource" do
+        let(:api_helpers) { Bongloy::SpecHelpers::ApiHelpers.new }
         let(:additional_params) { { "expand" => ["default_source"] } }
         let(:request_headers) { { "X-Foo" => "bar" } }
         let(:resource_headers) { { "X-Resource-Header" => "baz" } }
@@ -37,7 +38,7 @@ module Bongloy
           actual_headers = WebMock.requests.last.headers
           expect(actual_headers).to include(request_headers)
           expect(actual_headers).to include(resource_headers)
-          expect(actual_headers).to include({"Bongloy-Account" => bongloy_account})
+          expect(actual_headers).to include(api_helpers.asserted_bongloy_account_headers(bongloy_account))
         end
 
         def set_stripe_mode
