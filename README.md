@@ -78,9 +78,9 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 charge = Bongloy::ApiResource::Charge.new
-charge.amount = "500"
+charge.amount = "500"                              # amount in cents
 charge.currency = "usd"
-charge.source = "tok_unused_token_representing_a_card" # obtained from Bongloy Checkout or Tokens API
+charge.source = "unused_token_representing_a_card" # obtained from Bongloy Checkout or Tokens API
 
 begin
   charge.save!
@@ -89,13 +89,19 @@ end
 # => true
 
 charge.id
-# => "ch_07966e4f83601742ad00635de6a660957651b2b54da2f0bc619e6389c446cf7f"
+# => "19b1910f-1a2c-4109-82e2-536f230ee126"
 
 charge.livemode?
 # => false
 
 charge.captured?
 # => true
+
+charge.amount
+# => 500
+
+charge.currency
+# => "USD"
 ```
 
 ##### Valid Request, 10,000 KHR charge, supplying a Customer with no Card
@@ -108,9 +114,9 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 charge = Bongloy::ApiResource::Charge.new
-charge.amount = "10000"
+charge.amount = "10000"            # amount in Riel
 charge.currency = "khr"
-charge.customer = "cus_id_of_customer" # See Customers API
+charge.customer = "id_of_customer" # See Customers API
 
 begin
   charge.save!
@@ -118,14 +124,20 @@ rescue Bongloy::Error::Api::BaseError => e
 end
 # => true
 
+charge.id
+# => "5d2dd464-1f49-4c32-b9ba-122a01ed9c13"
+
 charge.livemode?
 # => false
 
-charge.id
-# => "ch_c10e4015bc3c4668f56ef6b3f8fb520f3287638617872ee80ed9227cd58bbdfb"
-
 charge.captured?
 # => true
+
+charge.amount
+# => 10000
+
+charge.currency
+# => "KHR"
 ```
 
 ##### Invalid Request, Insufficient Funds
@@ -140,7 +152,7 @@ require 'bongloy'
 charge = Bongloy::ApiResource::Charge.new
 charge.amount = "100000"
 charge.currency = "khr"
-charge.customer = "cus_id_of_customer" # See Customers API
+charge.customer = "id_of_customer" # See Customers API
 
 begin
   charge.save!
@@ -178,7 +190,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 charge = Bongloy::ApiResource::Charge.new
-charge.id = "ch_c10e4015bc3c4668f56ef6b3f8fb520f3287638617872ee80ed9227cd58bbdfb" # Obtained by creating a Charge
+charge.id = "a37d15fb-8f8e-43ea-ba84-9269bbac1560" # Obtained by creating a Charge
 
 begin
   charge.retrieve!
@@ -186,13 +198,13 @@ rescue Bongloy::Error::Api::BaseError => e
 end
 
 charge.id
-# => "ch_c10e4015bc3c4668f56ef6b3f8fb520f3287638617872ee80ed9227cd58bbdfb"
+# => "a37d15fb-8f8e-43ea-ba84-9269bbac1560"
 
 charge.amount
-# => 10000
+# => 500
 
 charge.currency
-# => "khr"
+# => "USD"
 
 charge.livemode?
 # => false
@@ -201,10 +213,10 @@ charge.captured?
 # => true
 
 charge.customer
-# => "cus_ff7ddd764812d90c0fbab58bd38a4bfd991fb8ffeb21ce93d6a7753bbfd4e668"
+# => nil
 
 charge.source
-# => {"exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"63", "id"=>"card_11a142856c7e8cdcad802f2f11ba479c1f3f49f8b4da8ceb1e3ca60dc4a6a3e5", "created"=>1412392253, "customer"=>"cus_ff7ddd764812d90c0fbab58bd38a4bfd991fb8ffeb21ce93d6a7753bbfd4e668", "brand"=>"wing"}
+# => {"id"=>"27d84373-c365-417c-8117-e9efc2eefd6c", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"visa", "fingerprint"=>nil, "country"=>nil, "cvc_check"=>nil, "address_line1_check"=>nil, "address_zip_check"=>nil, "object"=>"card", "last4"=>"4242", "created"=>1444296033, "customer"=>nil}
 ```
 
 ##### Invalid Request, Charge not found
@@ -217,7 +229,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 charge = Bongloy::ApiResource::Charge.new
-charge.id = "ch_invalid_charge_id"
+charge.id = "invalid_charge_id"
 
 begin
   charge.retrieve!
@@ -232,13 +244,13 @@ error_code
 # => 404
 
 error_hash
-# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/charges/ch_invalid_charge_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/charges/ch_invalid_charge_id"}
+# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/charges/invalid_charge_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/charges/ch_invalid_charge_id"}
 
 error_json
-# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/charges/ch_invalid_charge_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/charges/ch_invalid_charge_id\"}"
+# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/charges/invalid_charge_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/charges/ch_invalid_charge_id\"}"
 
 error_message
-# => "404. No such resource: https://bongloy.com/api/v1/charges/ch_invalid_charge_id"
+# => "404. No such resource: https://bongloy.com/api/v1/charges/invalid_charge_id"
 ```
 
 ### Customers
@@ -259,7 +271,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 customer = Bongloy::ApiResource::Customer.new
-customer.source = "tok_unused_token_representing_a_card" # obtained from Bongloy Checkout or Tokens API
+customer.source = "unused_token_representing_a_card" # obtained from Bongloy Checkout or Tokens API
 customer.email = "someone@example.com"
 customer.description = "My first customer"
 
@@ -270,7 +282,7 @@ end
 # => true
 
 customer.id
-# => "cus_602f930f506730ce4edc943f2b6d9580df3499d138e397caea7f6f2febe1fb86"
+# => "1e7cc759-fdc3-4207-8080-6ceff36e1bcb"
 
 customer.email
 # => "someone@example.com"
@@ -282,7 +294,7 @@ customer.livemode?
 # => false
 
 customer.default_source
-# => {"exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "id"=>"card_3baeec379b91fb29aa51fcbcebd0ef7bd33697e7922ad13e70b18125512863c8", "created"=>1412488139, "customer"=>"cus_602f930f506730ce4edc943f2b6d9580df3499d138e397caea7f6f2febe1fb86", "brand"=>"wing"}
+# => {"id"=>"5484df08-de2a-4064-b9a2-a5dce069571e", "exp_month"=>10, "exp_year"=>2015, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"visa", "fingerprint"=>nil, "country"=>nil, "cvc_check"=>nil, "address_line1_check"=>nil, "address_zip_check"=>nil, "object"=>"card", "last4"=>"4242", "created"=>1444297096, "customer"=>"1e7cc759-fdc3-4207-8080-6ceff36e1bcb"}
 ```
 
 ##### Invalid Request, Token already used
@@ -295,7 +307,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 customer = Bongloy::ApiResource::Customer.new
-customer.card = "tok_63a8609a36ee3430c8a57fa877a8bfa973c37360f24553d8c66d71ae5116931e"
+customer.source = "tok_63a8609a36ee3430c8a57fa877a8bfa973c37360f24553d8c66d71ae5116931e"
 
 begin
   customer.save!
@@ -310,13 +322,13 @@ error_code
 # => 422
 
 error_hash
-# => {"error"=>{"default_source"=>["can't be blank"], "message"=>["Default card can't be blank"], "param"=>["default_source"]}, "code"=>422}
+# => {"error"=>{"default_payment_source"=>["not found"], "message"=>["Default payment source not found"], "param"=>["default_payment_source"]}, "code"=>422}
 
 error_json
-# => "{\"error\":{\"default_source\":[\"can't be blank\"],\"message\":[\"Default card can't be blank\"],\"param\":[\"default_source\"]},\"code\":422}"
+# => "{\"error\":{\"default_payment_source\":[\"not found\"],\"message\":[\"Default payment source not found\"],\"param\":[\"default_payment_source\"]},\"code\":422}"
 
 error_message
-# => "422. default_source can't be blank, message Default card can't be blank, param default_source"
+# => "422. default_payment_source not found, message Default payment source not found, param default_payment_source"
 ```
 
 #### Retrieve an existing Customer
@@ -333,7 +345,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 customer = Bongloy::ApiResource::Customer.new
-customer.id = "cus_602f930f506730ce4edc943f2b6d9580df3499d138e397caea7f6f2febe1fb86" # Obtained by creating a Customer
+customer.id = "cada493f-61c1-413b-8064-c1b7abec93fa" # Obtained by creating a Customer
 
 begin
   customer.retrieve!
@@ -341,7 +353,7 @@ rescue Bongloy::Error::Api::BaseError => e
 end
 
 customer.id
-# => "cus_602f930f506730ce4edc943f2b6d9580df3499d138e397caea7f6f2febe1fb86"
+# => "cada493f-61c1-413b-8064-c1b7abec93fa"
 
 customer.email
 # => "someone@example.com"
@@ -350,7 +362,7 @@ customer.description
 # => "My first customer"
 
 customer.default_source
-# => {"exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "id"=>"card_3baeec379b91fb29aa51fcbcebd0ef7bd33697e7922ad13e70b18125512863c8", "created"=>1412488139, "customer"=>"cus_602f930f506730ce4edc943f2b6d9580df3499d138e397caea7f6f2febe1fb86", "brand"=>"wing"}
+# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"wing", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "created"=>1444296198, "customer"=>"cada493f-61c1-413b-8064-c1b7abec93fa"}
 ```
 
 ##### Invalid Request, Customer not found
@@ -363,7 +375,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 customer = Bongloy::ApiResource::Customer.new
-customer.id = "cus_invalid_customer_id"
+customer.id = "invalid_customer_id"
 
 begin
   customer.retrieve!
@@ -378,13 +390,13 @@ error_code
 # => 404
 
 error_hash
-# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/customers/cus_invalid_customer_id"}
+# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/customers/invalid_customer_id"}
 
 error_json
-# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/customers/cus_invalid_customer_id\"}"
+# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/customers/invalid_customer_id\"}"
 
 error_message
-# => "404. No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id"
+# => "404. No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id"
 ```
 
 #### Update an existing Customer
@@ -401,8 +413,8 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 customer = Bongloy::ApiResource::Customer.new
-customer.id = "cus_602f930f506730ce4edc943f2b6d9580df3499d138e397caea7f6f2febe1fb86"
-customer.source = "tok_unused_token_representing_a_card" # obtained from Bongloy Checkout or Tokens API
+customer.id = "cada493f-61c1-413b-8064-c1b7abec93fa"
+customer.source = "unused_token_representing_a_card" # obtained from Bongloy Checkout or Tokens API
 customer.email = "updated_customer@example.com"
 customer.description = "my updated first customer"
 
@@ -413,7 +425,7 @@ rescue Bongloy::Error::Api::BaseError => e
 end
 
 customer.id
-# => "cus_602f930f506730ce4edc943f2b6d9580df3499d138e397caea7f6f2febe1fb86"
+# => "cada493f-61c1-413b-8064-c1b7abec93fa"
 
 customer.email
 # => "updated_customer@example.com"
@@ -422,7 +434,7 @@ customer.description
 # => "my updated first customer"
 
 customer.default_source
-# => {"exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "fingerprint"=>nil, "country"=>nil, "cvc_check"=>nil, "address_line1_check"=>nil, "address_zip_check"=>nil, "object"=>"card", "last4"=>"4242", "id"=>"card_06bc6faa5159e33aabb93f808a8cf2a5cc8c71bfc48a0a3657623c49c6910cbe", "created"=>1412490560, "customer"=>"cus_602f930f506730ce4edc943f2b6d9580df3499d138e397caea7f6f2febe1fb86", "brand"=>"visa"}
+# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"wing", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "created"=>1444296198, "customer"=>"cada493f-61c1-413b-8064-c1b7abec93fa"}
 ```
 
 ##### Invalid Request, Customer not found
@@ -435,7 +447,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 customer = Bongloy::ApiResource::Customer.new
-customer.id = "cus_invalid_customer_id"
+customer.id = "invalid_customer_id"
 customer.source = "tok_unused_token_representing_a_card" # obtained from Bongloy Checkout or Tokens API
 customer.email = "updated_customer@example.com"
 customer.description = "my updated first customer"
@@ -454,13 +466,13 @@ error_code
 # => 404
 
 error_hash
-# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/customers/cus_invalid_customer_id"}
+# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/customers/invalid_customer_id"}
 
 error_json
-# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/customers/cus_invalid_customer_id\"}"
+# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/customers/invalid_customer_id\"}"
 
 error_message
-# => "404. No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id"
+# => "404. No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id"
 ```
 
 ### Tokens
@@ -481,7 +493,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 token = Bongloy::ApiResource::Token.new
-token.card = {:number => "4242424242424242", :exp_month => "12", :exp_year => "2020"}
+token.card = {:number => "4242424242424242", :exp_month => "12", :exp_year => "2020", :cvc => "123"}
 
 begin
   token.save!
@@ -489,7 +501,7 @@ rescue Bongloy::Error::Api::BaseError => e
 end
 
 token.id
-# => "tok_1204c78e50c1c2b7fcd23d56fa63171372d88c8a595714e7b05b371de904be8d"
+# => "93ed61a0-cc53-49f0-a304-5bef8313ee39"
 
 token.livemode?
 # => false
@@ -498,7 +510,7 @@ token.used?
 # => false
 
 token.card
-# => {"exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "fingerprint"=>nil, "country"=>nil, "cvc_check"=>nil, "address_line1_check"=>nil, "address_zip_check"=>nil, "object"=>"card", "last4"=>"4242", "id"=>"card_714ffdd6fa9bb74b497cbf954fa80318b268c720176eca811d67431e9428161e", "created"=>1412492468, "customer"=>nil, "brand"=>"visa"}
+# => {"id"=>"27d84373-c365-417c-8117-e9efc2eefd6c", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"visa", "fingerprint"=>nil, "country"=>nil, "cvc_check"=>nil, "address_line1_check"=>nil, "address_zip_check"=>nil, "object"=>"card", "last4"=>"4242", "created"=>1444296033, "customer"=>nil}
 ```
 
 ##### Valid request, Create a Wing Card Token
@@ -519,7 +531,7 @@ rescue Bongloy::Error::Api::BaseError => e
 end
 
 token.id
-# => "tok_f1a00cdc899bc3c78e906033d17f79cd17bc43f2868580439b89fd127b40aa9f"
+# => "74596e5e-7350-48f1-a079-6be548b425b9"
 
 token.livemode?
 # => false
@@ -528,10 +540,10 @@ token.used?
 # => false
 
 token.card
-# => {"exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "id"=>"card_055836d0a59b092419a9395f26b16c432dd7ae1001854481ec0eedf0f7d3d9d0", "created"=>1412492637, "customer"=>nil, "brand"=>"wing"}
+# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"wing", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "created"=>1444296198, "customer"=>nil}
 ```
 
-##### Invalid request, PIN (CVC) not supplied for a Wing Card
+##### Invalid request, PIN (CVC) not supplied
 
 ```
 $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
@@ -579,7 +591,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 token = Bongloy::ApiResource::Token.new
-token.id = "tok_1204c78e50c1c2b7fcd23d56fa63171372d88c8a595714e7b05b371de904be8d" # Obtained by Bongloy Checkout or the Tokens API
+token.id = "74596e5e-7350-48f1-a079-6be548b425b9" # Obtained by Bongloy Checkout or the Tokens API
 
 begin
   token.retrieve!
@@ -587,7 +599,7 @@ rescue Bongloy::Error::Api::BaseError => e
 end
 
 token.id
-# => "tok_1204c78e50c1c2b7fcd23d56fa63171372d88c8a595714e7b05b371de904be8d"
+# => "74596e5e-7350-48f1-a079-6be548b425b9"
 
 token.livemode?
 # => false
@@ -596,7 +608,7 @@ token.used?
 # => false
 
 token.card
-# => {"exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "fingerprint"=>nil, "country"=>nil, "cvc_check"=>nil, "address_line1_check"=>nil, "address_zip_check"=>nil, "object"=>"card", "last4"=>"4242", "id"=>"card_714ffdd6fa9bb74b497cbf954fa80318b268c720176eca811d67431e9428161e", "created"=>1412492468, "customer"=>nil, "brand"=>"visa"}
+# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"wing", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "created"=>1444296198, "customer"=>nil}
 ```
 
 ##### Invalid Request, Token not found
@@ -609,7 +621,7 @@ $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
 require 'bongloy'
 
 token = Bongloy::ApiResource::Token.new
-token.id = "tok_invalid_token_id"
+token.id = "invalid_token_id"
 
 begin
   token.retrieve!
@@ -624,13 +636,13 @@ error_code
 # => 404
 
 error_hash
-# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/tokens/tok_invalid_token_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/tokens/tok_invalid_token_id"}
+# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/tokens/invalid_token_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/tokens/invalid_token_id"}
 
 error_json
-# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/tokens/tok_invalid_token_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/tokens/tok_invalid_token_id\"}"
+# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/tokens/invalid_token_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/tokens/invalid_token_id\"}"
 
 error_message
-# => "404. No such resource: https://bongloy.com/api/v1/tokens/tok_invalid_token_id"
+# => "404. No such resource: https://bongloy.com/api/v1/tokens/invalid_token_id"
 ```
 
 ## Contributing
