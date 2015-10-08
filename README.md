@@ -157,22 +157,18 @@ charge.customer = "id_of_customer" # See Customers API
 begin
   charge.save!
 rescue Bongloy::Error::Api::BaseError => e
-  error_code = e.code
-  error_hash = e.to_hash
-  error_json = e.to_json
-  error_message = e.message
 end
 
-error_code
+e.code
 # => 422
 
-error_hash
+e.to_hash
 # => {"error"=>{"card_object"=>[". ERROR: Not enough wallet balance to do transactions."], "message"=>["Card object . ERROR: Not enough wallet balance to do transactions."], "param"=>["card_object"]}, "code"=>422}
 
-error_json
+e.to_json
 # => "{\"error\":{\"card_object\":[\". ERROR: Not enough wallet balance to do transactions.\"],\"message\":[\"Card object . ERROR: Not enough wallet balance to do transactions.\"],\"param\":[\"card_object\"]},\"code\":422}"
 
-error_message
+e.message
 # => "422. card_object . ERROR: Not enough wallet balance to do transactions., message Card object . ERROR: Not enough wallet balance to do transactions., param card_object"
 ```
 
@@ -234,22 +230,18 @@ charge.id = "invalid_charge_id"
 begin
   charge.retrieve!
 rescue Bongloy::Error::Api::BaseError => e
-  error_code = e.code
-  error_hash = e.to_hash
-  error_json = e.to_json
-  error_message = e.message
 end
 
-error_code
+e.code
 # => 404
 
-error_hash
+e.to_hash
 # => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/charges/invalid_charge_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/charges/ch_invalid_charge_id"}
 
-error_json
+e.to_json
 # => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/charges/invalid_charge_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/charges/ch_invalid_charge_id\"}"
 
-error_message
+e.message
 # => "404. No such resource: https://bongloy.com/api/v1/charges/invalid_charge_id"
 ```
 
@@ -312,22 +304,18 @@ customer.source = "tok_63a8609a36ee3430c8a57fa877a8bfa973c37360f24553d8c66d71ae5
 begin
   customer.save!
 rescue Bongloy::Error::Api::BaseError => e
-  error_code = e.code
-  error_hash = e.to_hash
-  error_json = e.to_json
-  error_message = e.message
 end
 
-error_code
+e.code
 # => 422
 
-error_hash
+e.to_hash
 # => {"error"=>{"default_payment_source"=>["not found"], "message"=>["Default payment source not found"], "param"=>["default_payment_source"]}, "code"=>422}
 
-error_json
+e.to_json
 # => "{\"error\":{\"default_payment_source\":[\"not found\"],\"message\":[\"Default payment source not found\"],\"param\":[\"default_payment_source\"]},\"code\":422}"
 
-error_message
+e.message
 # => "422. default_payment_source not found, message Default payment source not found, param default_payment_source"
 ```
 
@@ -380,22 +368,18 @@ customer.id = "invalid_customer_id"
 begin
   customer.retrieve!
 rescue Bongloy::Error::Api::BaseError => e
-  error_code = e.code
-  error_hash = e.to_hash
-  error_json = e.to_json
-  error_message = e.message
 end
 
-error_code
+e.code
 # => 404
 
-error_hash
+e.to_hash
 # => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/customers/invalid_customer_id"}
 
-error_json
+e.to_json
 # => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/customers/invalid_customer_id\"}"
 
-error_message
+e.message
 # => "404. No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id"
 ```
 
@@ -456,23 +440,196 @@ begin
   customer.save!
   customer.retrieve!
 rescue Bongloy::Error::Api::BaseError => e
-  error_code = e.code
-  error_hash = e.to_hash
-  error_json = e.to_json
-  error_message = e.message
 end
 
-error_code
+e.code
 # => 404
 
-error_hash
-# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/customers/invalid_customer_id"}
+e.to_hash
+# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/customers/invalid_customer_id"}
 
-error_json
-# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/customers/cus_invalid_customer_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/customers/invalid_customer_id\"}"
+e.to_json
+# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/customers/invalid_customer_id\"}"
 
-error_message
+e.message
 # => "404. No such resource: https://bongloy.com/api/v1/customers/invalid_customer_id"
+```
+
+### Cards
+
+See also [Bongloy API -> Cards](https://bongloy.com/documentation#bongloy_api_reference_cards)
+
+#### Create a Card (Attach a new Card to a Customer)
+
+See also [Bongloy API -> Cards -> Create a new card](https://bongloy.com/documentation#bongloy_api_reference_cards_create_card)
+
+##### Valid Request
+
+```
+$ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
+```
+
+```ruby
+require 'bongloy'
+
+card = Bongloy::ApiResource::Card.new("existing_customer_id") # Obtained by creating a customer
+card.source = "unused_token_representing_a_card" # obtained from Bongloy Checkout or Tokens API
+
+begin
+  card.save!
+rescue Bongloy::Error::Api::BaseError => e
+end
+
+card.id
+# => "5a6843ac-1737-4039-aff2-7f56610752b2"
+
+card.livemode?
+# => false
+
+card.exp_month
+# => 10
+
+card.exp_year
+# => 2015
+
+card.brand
+# => "visa"
+
+card.last4
+# => "4242"
+```
+
+##### Invalid Request (Token already used)
+
+```
+$ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
+```
+
+```ruby
+require 'bongloy'
+
+card = Bongloy::ApiResource::Card.new("existing_customer_id") # Obtained by creating a customer
+card.source = "used_token" # obtained from Bongloy Checkout or Tokens API
+
+begin
+  card.save!
+rescue Bongloy::Error::Api::BaseError => e
+end
+
+e.code
+# => 422
+
+e.to_hash
+# => {"error"=>{"token"=>["not found"], "message"=>["Token not found"], "param"=>["token"]}, "code"=>422}
+
+e.to_json
+# => "{\"error\":{\"token\":[\"not found\"],\"message\":[\"Token not found\"],\"param\":[\"token\"]},\"code\":422}"
+
+e.message
+# => "422. token not found, message Token not found, param token"
+```
+
+#### Retrieve a Card
+
+See also [Bongloy API -> Cards -> Create an existing card](https://bongloy.com/documentation#bongloy_api_reference_cards_retrieve_card)
+
+##### Valid Request
+
+```
+$ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
+```
+
+```ruby
+require 'bongloy'
+
+card = Bongloy::ApiResource::Card.new("existing_customer_id") # obtained by creating a Customer
+card.id = "existing_card_id"                                  # obtained by creating a Card
+
+begin
+  card.retrieve!
+rescue Bongloy::Error::Api::BaseError => e
+end
+
+card.id
+# => "5a6843ac-1737-4039-aff2-7f56610752b2"
+
+card.livemode?
+# => false
+
+card.exp_month
+# => 10
+
+card.exp_year
+# => 2015
+
+card.brand
+# => "visa"
+
+card.last4
+# => "4242"
+
+card.name
+# => nil
+```
+
+##### Invalid Request (Card not found)
+
+```
+$ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
+```
+
+```ruby
+require 'bongloy'
+
+card = Bongloy::ApiResource::Card.new("existing_customer_id") # obtained by creating a customer
+card.id = "incorrect_card_id"
+
+begin
+  card.retrieve!
+rescue Bongloy::Error::Api::BaseError => e
+end
+
+e.code
+# => 404
+
+e.to_hash
+# => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/customers/existing_customer_id/payment_sources/incorrect_card_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/customers/existing_customer_id/payment_sources/incorrect_card_id"}
+
+e.to_json
+# => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/customers/existing_customer_id/payment_sources/incorrect_card_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/customers/existing_customer_id/payment_sources/incorrect_card_id\"}"
+
+e.message
+# => "404. No such resource: https://bongloy.com/api/v1/customers/existing_customer_id/payment_sources/incorrect_card_id"
+```
+
+#### Update a Card
+
+See also [Bongloy API -> Cards -> Update an existing card](https://bongloy.com/documentation#bongloy_api_reference_cards_update_card)
+
+##### Valid Request
+
+```
+$ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
+```
+
+```ruby
+require 'bongloy'
+
+card = Bongloy::ApiResource::Card.new("existing_customer_id") # obtained by creating a Customer
+card.id = "existing_card_id"                                  # obtained by creating a Card
+card.name = "Laura Mom"
+
+begin
+  card.save!
+  card.retrieve!
+rescue Bongloy::Error::Api::BaseError => e
+end
+
+card.id
+# => "5a6843ac-1737-4039-aff2-7f56610752b2"
+
+card.name
+# => "Laura Mom"
 ```
 
 ### Tokens
@@ -558,22 +715,18 @@ token.card = {:number => "5018188000383662", :exp_month => "12", :exp_year => "2
 begin
   token.save!
 rescue Bongloy::Error::Api::BaseError => e
-  error_code = e.code
-  error_hash = e.to_hash
-  error_json = e.to_json
-  error_message = e.message
 end
 
-error_code
+e.code
 # => 422
 
-error_hash
+e.to_hash
 # => {"error"=>{"card"=>["is invalid"], "message"=>["Card is invalid"], "param"=>["card"]}, "code"=>422}
 
-error_json
+e.to_json
 # => "{\"error\":{\"card\":[\"is invalid\"],\"message\":[\"Card is invalid\"],\"param\":[\"card\"]},\"code\":422}"
 
-error_message
+e.message
 # => "422. card is invalid, message Card is invalid, param card"
 ```
 
@@ -626,22 +779,18 @@ token.id = "invalid_token_id"
 begin
   token.retrieve!
 rescue Bongloy::Error::Api::BaseError => e
-  error_code = e.code
-  error_hash = e.to_hash
-  error_json = e.to_json
-  error_message = e.message
 end
 
-error_code
+e.code
 # => 404
 
-error_hash
+e.to_hash
 # => {"errors"=>{"base"=>["No such resource: https://bongloy.com/api/v1/tokens/invalid_token_id"]}, "code"=>404, "resource"=>"https://bongloy.com/api/v1/tokens/invalid_token_id"}
 
-error_json
+e.to_json
 # => "{\"errors\":{\"base\":[\"No such resource: https://bongloy.com/api/v1/tokens/invalid_token_id\"]},\"code\":404,\"resource\":\"https://bongloy.com/api/v1/tokens/invalid_token_id\"}"
 
-error_message
+e.message
 # => "404. No such resource: https://bongloy.com/api/v1/tokens/invalid_token_id"
 ```
 
