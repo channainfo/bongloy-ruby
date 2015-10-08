@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/dwilkie/bongloy-ruby.svg?branch=master)](https://travis-ci.org/dwilkie/bongloy-ruby)
 
-Consumes the [Bongloy API](https://bongloy.com/documentation#bongloy_api_reference)
+Consumes the [Bongloy API](bongloy.com/documentation#bongloy_api_reference)
 
 ## Installation
 
@@ -24,11 +24,11 @@ $ bundle
 
 ### Full API Documentation
 
-The [Bongloy API](https://bongloy.com/documentation#bongloy_api_reference) is described in detail with example CURL requests.
+The [Bongloy API](bongloy.com/documentation#bongloy_api_reference) is described in detail with example CURL requests.
 
 ### Authentication
 
-The environment variable `BONGLOY_SECRET_KEY` can be set to automatically configure Bongloy with your [API Key](https://bongloy.com/documentation/#bongloy_api_reference_authentication). For example:
+The environment variable `BONGLOY_SECRET_KEY` can be set to automatically configure Bongloy with your [API Key](bongloy.com/documentation/#bongloy_api_reference_authentication). For example:
 
 ```
 $ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
@@ -42,7 +42,7 @@ token.api_key
 # => "sk_test_my_secret_api_key"
 ```
 
-Alternatively you can set your [API Key](https://bongloy.com/documentation/#bongloy_api_reference_authentication) each time when you create an API Resource. For example:
+Alternatively you can set your [API Key](bongloy.com/documentation/#bongloy_api_reference_authentication) each time when you create an API Resource. For example:
 
 ```
 $ bundle exec irb
@@ -58,15 +58,15 @@ token.api_key = "sk_test_my_secret_api_key"
 # => "sk_test_my_secret_api_key"
 ```
 
-The following examples should actually work if you provide the correct credentials. Replace `sk_test_my_secret_api_key` with your own [Secret API Key](https://bongloy.com/documentation/#bongloy_api_reference_authentication).
+The following examples should actually work if you provide the correct credentials. Replace `sk_test_my_secret_api_key` with your own [Secret API Key](bongloy.com/documentation/#bongloy_api_reference_authentication).
 
 ### Charges
 
-See also [Bongloy API -> Charges](https://bongloy.com/documentation#bongloy_api_reference_charges)
+See also [Bongloy API -> Charges](bongloy.com/documentation#bongloy_api_reference_charges)
 
 #### Creating a Charge (charging a credit or Wing card)
 
-See also [Bongloy API -> Charges -> Create a new charge](https://bongloy.com/documentation#bongloy_api_reference_charges_create_charge)
+See also [Bongloy API -> Charges -> Create a new charge](bongloy.com/documentation#bongloy_api_reference_charges_create_charge)
 
 ##### Valid Request, $5 USD charge, supplying a Card with no Customer
 
@@ -174,7 +174,7 @@ e.message
 
 #### Retrieve an existing Charge
 
-See also [Bongloy API -> Charges -> Retrieve an existing charge](https://bongloy.com/documentation#bongloy_api_reference_charges_retrieve_charge)
+See also [Bongloy API -> Charges -> Retrieve an existing charge](bongloy.com/documentation#bongloy_api_reference_charges_retrieve_charge)
 
 ##### Valid Request
 
@@ -247,11 +247,11 @@ e.message
 
 ### Customers
 
-See also [Bongloy API -> Customers](https://bongloy.com/documentation#bongloy_api_reference_customers)
+See also [Bongloy API -> Customers](bongloy.com/documentation#bongloy_api_reference_customers)
 
 #### Create a Customer
 
-See also [Bongloy API -> Customers -> Create a new customer](https://bongloy.com/documentation#bongloy_api_reference_customers_create_customer)
+See also [Bongloy API -> Customers -> Create a new customer](bongloy.com/documentation#bongloy_api_reference_customers_create_customer)
 
 ##### Valid request, Supplying a Card, Email and Description
 
@@ -321,7 +321,7 @@ e.message
 
 #### Retrieve an existing Customer
 
-See also [Bongloy API -> Customers -> Retrieve an existing customer](https://bongloy.com/documentation#bongloy_api_reference_customers_retrieve_customer)
+See also [Bongloy API -> Customers -> Retrieve an existing customer](bongloy.com/documentation#bongloy_api_reference_customers_retrieve_customer)
 
 ##### Valid Request
 
@@ -385,7 +385,7 @@ e.message
 
 #### Update an existing Customer
 
-See also [Bongloy API -> Customers -> Update an existing Customer](https://bongloy.com/documentation#bongloy_api_reference_customers_update_customer)
+See also [Bongloy API -> Customers -> Update an existing Customer](bongloy.com/documentation#bongloy_api_reference_customers_update_customer)
 
 ##### Valid Request, Updating the Card, Email and Description
 
@@ -457,11 +457,11 @@ e.message
 
 ### Cards
 
-See also [Bongloy API -> Cards](https://bongloy.com/documentation#bongloy_api_reference_cards)
+See also [Bongloy API -> Cards](bongloy.com/documentation#bongloy_api_reference_cards)
 
 #### Create a Card (Attach a new Card to a Customer)
 
-See also [Bongloy API -> Cards -> Create a new card](https://bongloy.com/documentation#bongloy_api_reference_cards_create_card)
+See also [Bongloy API -> Cards -> Create a new card](bongloy.com/documentation#bongloy_api_reference_cards_create_card)
 
 ##### Valid Request
 
@@ -531,7 +531,7 @@ e.message
 
 #### Retrieve a Card
 
-See also [Bongloy API -> Cards -> Create an existing card](https://bongloy.com/documentation#bongloy_api_reference_cards_retrieve_card)
+See also [Bongloy API -> Cards -> Create an existing card](bongloy.com/documentation#bongloy_api_reference_cards_retrieve_card)
 
 ##### Valid Request
 
@@ -604,7 +604,7 @@ e.message
 
 #### Update a Card
 
-See also [Bongloy API -> Cards -> Update an existing card](https://bongloy.com/documentation#bongloy_api_reference_cards_update_card)
+See also [Bongloy API -> Cards -> Update an existing card](bongloy.com/documentation#bongloy_api_reference_cards_update_card)
 
 ##### Valid Request
 
@@ -634,11 +634,11 @@ card.name
 
 ### Tokens
 
-See also [Bongloy API -> Tokens](https://bongloy.com/documentation#bongloy_api_reference_tokens)
+See also [Bongloy API -> Tokens](bongloy.com/documentation#bongloy_api_reference_tokens)
 
 #### Create a Token
 
-See also [Bongloy API -> Tokens -> Create a new token](https://bongloy.com/documentation#bongloy_api_reference_tokens_create_token)
+See also [Bongloy API -> Tokens -> Create a new token](bongloy.com/documentation#bongloy_api_reference_tokens_create_token)
 
 ##### Valid request, Create a Credit Card Token
 
@@ -732,7 +732,7 @@ e.message
 
 #### Retrieve an existing Token
 
-See also [Bongloy API -> Tokens -> Retrieve an existing token](https://bongloy.com/documentation#bongloy_api_reference_tokens_retrieve_token)
+See also [Bongloy API -> Tokens -> Retrieve an existing token](bongloy.com/documentation#bongloy_api_reference_tokens_retrieve_token)
 
 ##### Valid Request
 
