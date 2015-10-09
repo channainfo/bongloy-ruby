@@ -15,7 +15,11 @@ module Bongloy
       end
 
       def request_body
-        WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.body)
+        WebMock::Util::QueryMapper.query_to_values(last_request.body)
+      end
+
+      def last_request
+        WebMock.requests.last
       end
 
       shared_examples_for "a bongloy api resource" do
@@ -26,7 +30,7 @@ module Bongloy
         let(:bongloy_account) { "acct_1234" }
 
         def assert_additional_params!
-          expect(WebMock::Util::QueryMapper.query_to_values(WebMock.requests.last.uri.query)).to eq(additional_params)
+          expect(WebMock::Util::QueryMapper.query_to_values(last_request.uri.query)).to eq(additional_params)
         end
 
         def setup_header_example
@@ -35,7 +39,7 @@ module Bongloy
         end
 
         def assert_headers!
-          actual_headers = WebMock.requests.last.headers
+          actual_headers = last_request.headers
           expect(actual_headers).to include(request_headers)
           expect(actual_headers).to include(resource_headers)
           expect(actual_headers).to include(api_helpers.asserted_bongloy_account_headers(bongloy_account))
@@ -64,9 +68,9 @@ module Bongloy
         end
 
         describe "#bongloy_account" do
-          it { expect(subject.bongloy_account).to eq(nil) }
-          it { expect(build(factory, :bongloy_account => bongloy_account).bongloy_account).to eq(bongloy_account) }
-          it { subject.bongloy_account = bongloy_account; expect(subject.headers[:bongloy_account]).to eq(bongloy_account) }
+          subject { build(factory, :bongloy_account => bongloy_account) }
+          it { expect(subject.bongloy_account).to eq(bongloy_account) }
+          it { expect(subject.headers["bongloy_account"]).to eq(bongloy_account) }
         end
 
         describe "#headers" do

@@ -7,6 +7,10 @@ module Bongloy
         params[:card] = card
       end
 
+      def customer=(customer)
+        params[:customer] = customer
+      end
+
       private
 
       def updatable?

@@ -58,11 +58,11 @@ module Bongloy
       end
 
       def bongloy_account
-        headers[:bongloy_account]
+        headers["bongloy_account"]
       end
 
       def bongloy_account=(value)
-        self.headers[:bongloy_account] = value if value
+        self.headers["bongloy_account"] = value if value
       end
 
       def headers=(value)

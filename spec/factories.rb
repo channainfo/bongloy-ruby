@@ -35,11 +35,12 @@ FactoryGirl.define do
       id { generate(:uuid) }
     end
 
-    trait :with_optional_params do
+    trait :with_card do
+      card { Bongloy::SpecHelpers::ApiHelpers.new.credit_card_token_params }
     end
 
-    params { Bongloy::SpecHelpers::ApiHelpers.new.credit_card_token_params }
-    initialize_with { new(params) }
+    trait :with_optional_params do
+    end
   end
 
   factory :publishable_api_key, :class => Bongloy::ApiKey::Publishable do

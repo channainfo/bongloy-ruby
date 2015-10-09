@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: <%= endpoint %>
+    body:
+      encoding: UTF-8
+      string: customer=cada493f-61c1-413b-8064-c1b7abec93fa
+    headers:
+      Authorization:
+      - Bearer sk_test_9741e073e11643ddf1c2347ac8b3a24f6ba2414b5080fc1a0311467b4bea41fe
+      Bongloy-Account:
+      - 5aa2448f-9e38-43c1-9072-7ea950d34250
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Location:
+      - http://localhost:5000/api/v1/tokens/ed2160f1-bd48-4b04-b704-ac657e25e089
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"4e2e95741befad415c86a48ade224508"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 17bd0f03-5f34-4512-9b8f-1fa1cfb1f940
+      X-Runtime:
+      - '0.411623'
+      Vary:
+      - Origin
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: '{"id":"ed2160f1-bd48-4b04-b704-ac657e25e089","used":false,"livemode":false,"object":"token","card":{"id":"517bebfd-3c62-412c-8502-bb9b019797d8","exp_month":12,"exp_year":2020,"name":"Laura
+        Mom","address_line1":null,"address_line2":null,"address_city":null,"address_state":null,"address_zip":null,"address_country":null,"brand":"wing","fingerprint":null,"country":null,"object":"card","last4":"62","created":1444362482,"customer":null},"type":"card","created":1444362482}'
+    http_version:
+  recorded_at: Fri, 09 Oct 2015 03:48:02 GMT
+recorded_with: VCR 2.9.3
