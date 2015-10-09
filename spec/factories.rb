@@ -13,10 +13,6 @@ FactoryGirl.define do
 
   factory :client, :class => Bongloy::Client do
     skip_create
-
-    trait :stripe do
-      api_endpoint { ENV["STRIPE_API_ENDPOINT"] }
-    end
   end
 
   factory :error, :class => Bongloy::Error::Api::BaseError do

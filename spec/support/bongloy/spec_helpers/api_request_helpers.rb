@@ -4,14 +4,8 @@ module Bongloy
       def expect_api_request(options = {}, &block)
         request_options = options.dup
 
-        stripe_mode = request_options.delete(:stripe_mode)
-        if stripe_mode
-          api_endpoint = ENV['STRIPE_API_ENDPOINT']
-          cassette_dir = "stripe/api_resources"
-        else
-          api_endpoint = ENV['BONGLOY_API_ENDPOINT']
-          cassette_dir = "api_resources"
-        end
+        api_endpoint = ENV['BONGLOY_API_ENDPOINT']
+        cassette_dir = "api_resources"
 
         api_resource_endpoint = request_options.delete(:api_resource_endpoint)
         api_resource_id = request_options.delete(:api_resource_id)

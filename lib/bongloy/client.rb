@@ -3,12 +3,11 @@ module Bongloy
     require 'httparty'
 
     BONGLOY_API_ENDPOINT = "https://bongloy-staging.herokuapp.com/api/v1"
-    STRIPE_API_ENDPOINT = "https://api.stripe.com/v1"
 
     attr_accessor :api_endpoint
 
     def initialize(options = {})
-      self.api_endpoint = options[:api_endpoint] || (ENV["STRIPE_MODE"].to_i == 1 ? (ENV["STRIPE_API_ENDPOINT"] || STRIPE_API_ENDPOINT) : (ENV["BONGLOY_API_ENDPOINT"] || BONGLOY_API_ENDPOINT))
+      self.api_endpoint = options[:api_endpoint] || ENV["BONGLOY_API_ENDPOINT"] || BONGLOY_API_ENDPOINT
     end
 
     def create_resource(path, api_key, params = {}, headers = {})
@@ -20,15 +19,11 @@ module Bongloy
     end
 
     def update_resource(path, api_key, params = {}, headers = {})
-      do_request(stripe_mode? ? :post : :put, :body, path, api_key, params, headers)
+      do_request(:put, :body, path, api_key, params, headers)
     end
 
     def api_key
-      stripe_mode? ? ENV["STRIPE_SECRET_KEY"] : ENV["BONGLOY_SECRET_KEY"]
-    end
-
-    def stripe_mode?
-      api_endpoint == ENV["STRIPE_API_ENDPOINT"]
+      ENV["BONGLOY_SECRET_KEY"]
     end
 
     private

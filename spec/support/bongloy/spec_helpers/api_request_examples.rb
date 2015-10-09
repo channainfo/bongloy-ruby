@@ -45,11 +45,6 @@ module Bongloy
           expect(actual_headers).to include(api_helpers.asserted_bongloy_account_headers(bongloy_account))
         end
 
-        def set_stripe_mode
-          allow(ENV).to receive(:[]).and_call_original
-          allow(ENV).to receive(:[]).with("STRIPE_MODE").and_return("1")
-        end
-
         describe "#initialize(params = {})" do
           context "passing an :api_key" do
             let(:api_key) { "pk_test_12345" }
@@ -154,16 +149,6 @@ module Bongloy
               end
 
               it { assert_invalid_request! }
-
-              context "in stripe mode" do
-                let(:request_options) { { :stripe_mode => true } }
-
-                def setup_scenario
-                  set_stripe_mode
-                end
-
-                it { assert_invalid_request! }
-              end
             end
 
             context "with valid params" do
