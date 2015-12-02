@@ -64,7 +64,7 @@ The following examples should actually work if you provide the correct credentia
 
 See also [Bongloy API -> Charges](http://bongloy.com/documentation#bongloy_api_reference_charges)
 
-#### Creating a Charge (charging a credit or Wing card)
+#### Creating a Charge
 
 See also [Bongloy API -> Charges -> Create a new charge](http://bongloy.com/documentation#bongloy_api_reference_charges_create_charge)
 
@@ -102,74 +102,6 @@ charge.amount
 
 charge.currency
 # => "USD"
-```
-
-##### Valid Request, 10,000 KHR charge, supplying a Customer with no Card
-
-```
-$ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
-```
-
-```ruby
-require 'bongloy'
-
-charge = Bongloy::ApiResource::Charge.new
-charge.amount = "10000"            # amount in Riel
-charge.currency = "khr"
-charge.customer = "id_of_customer" # See Customers API
-
-begin
-  charge.save!
-rescue Bongloy::Error::Api::BaseError => e
-end
-# => true
-
-charge.id
-# => "5d2dd464-1f49-4c32-b9ba-122a01ed9c13"
-
-charge.livemode?
-# => false
-
-charge.captured?
-# => true
-
-charge.amount
-# => 10000
-
-charge.currency
-# => "KHR"
-```
-
-##### Invalid Request, Insufficient Funds
-
-```
-$ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
-```
-
-```ruby
-require 'bongloy'
-
-charge = Bongloy::ApiResource::Charge.new
-charge.amount = "100000"
-charge.currency = "khr"
-charge.customer = "id_of_customer" # See Customers API
-
-begin
-  charge.save!
-rescue Bongloy::Error::Api::BaseError => e
-end
-
-e.code
-# => 422
-
-e.to_hash
-# => {"error"=>{"card_object"=>[". ERROR: Not enough wallet balance to do transactions."], "message"=>["Card object . ERROR: Not enough wallet balance to do transactions."], "param"=>["card_object"]}, "code"=>422}
-
-e.to_json
-# => "{\"error\":{\"card_object\":[\". ERROR: Not enough wallet balance to do transactions.\"],\"message\":[\"Card object . ERROR: Not enough wallet balance to do transactions.\"],\"param\":[\"card_object\"]},\"code\":422}"
-
-e.message
-# => "422. card_object . ERROR: Not enough wallet balance to do transactions., message Card object . ERROR: Not enough wallet balance to do transactions., param card_object"
 ```
 
 #### Retrieve an existing Charge
@@ -350,7 +282,7 @@ customer.description
 # => "My first customer"
 
 customer.default_source
-# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"wing", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "created"=>1444296198, "customer"=>"cada493f-61c1-413b-8064-c1b7abec93fa"}
+# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"visa", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"4242", "created"=>1444296198, "customer"=>"cada493f-61c1-413b-8064-c1b7abec93fa"}
 ```
 
 ##### Invalid Request, Customer not found
@@ -418,7 +350,7 @@ customer.description
 # => "my updated first customer"
 
 customer.default_source
-# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"wing", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "created"=>1444296198, "customer"=>"cada493f-61c1-413b-8064-c1b7abec93fa"}
+# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"visa", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"4242", "created"=>1444296198, "customer"=>"cada493f-61c1-413b-8064-c1b7abec93fa"}
 ```
 
 ##### Invalid Request, Customer not found
@@ -670,66 +602,6 @@ token.card
 # => {"id"=>"27d84373-c365-417c-8117-e9efc2eefd6c", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"visa", "fingerprint"=>nil, "country"=>nil, "cvc_check"=>nil, "address_line1_check"=>nil, "address_zip_check"=>nil, "object"=>"card", "last4"=>"4242", "created"=>1444296033, "customer"=>nil}
 ```
 
-##### Valid request, Create a Wing Card Token
-
-```
-$ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
-```
-
-```ruby
-require 'bongloy'
-
-token = Bongloy::ApiResource::Token.new
-token.card = {:number => "5018188000383662", :exp_month => "12", :exp_year => "2020", :cvc => "2008"}
-
-begin
-  token.save!
-rescue Bongloy::Error::Api::BaseError => e
-end
-
-token.id
-# => "74596e5e-7350-48f1-a079-6be548b425b9"
-
-token.livemode?
-# => false
-
-token.used?
-# => false
-
-token.card
-# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"wing", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "created"=>1444296198, "customer"=>nil}
-```
-
-##### Invalid request, PIN (CVC) not supplied
-
-```
-$ BONGLOY_SECRET_KEY="sk_test_my_secret_api_key" bundle exec irb
-```
-
-```ruby
-require 'bongloy'
-
-token = Bongloy::ApiResource::Token.new
-token.card = {:number => "5018188000383662", :exp_month => "12", :exp_year => "2020"}
-
-begin
-  token.save!
-rescue Bongloy::Error::Api::BaseError => e
-end
-
-e.code
-# => 422
-
-e.to_hash
-# => {"error"=>{"card"=>["is invalid"], "message"=>["Card is invalid"], "param"=>["card"]}, "code"=>422}
-
-e.to_json
-# => "{\"error\":{\"card\":[\"is invalid\"],\"message\":[\"Card is invalid\"],\"param\":[\"card\"]},\"code\":422}"
-
-e.message
-# => "422. card is invalid, message Card is invalid, param card"
-```
-
 #### Retrieve an existing Token
 
 See also [Bongloy API -> Tokens -> Retrieve an existing token](http://bongloy.com/documentation#bongloy_api_reference_tokens_retrieve_token)
@@ -761,7 +633,7 @@ token.used?
 # => false
 
 token.card
-# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"wing", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"62", "created"=>1444296198, "customer"=>nil}
+# => {"id"=>"2b575213-f87f-462b-89db-0d6ce8dce338", "exp_month"=>12, "exp_year"=>2020, "name"=>nil, "address_line1"=>nil, "address_line2"=>nil, "address_city"=>nil, "address_state"=>nil, "address_zip"=>nil, "address_country"=>nil, "brand"=>"visa", "fingerprint"=>nil, "country"=>nil, "object"=>"card", "last4"=>"4242", "created"=>1444296198, "customer"=>nil}
 ```
 
 ##### Invalid Request, Token not found
