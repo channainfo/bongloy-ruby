@@ -2,7 +2,7 @@ module Bongloy
   class Client
     require 'httparty'
 
-    BONGLOY_API_ENDPOINT = "https://bongloy-staging.herokuapp.com/api/v1"
+    BONGLOY_API_ENDPOINT = "https://www.bongloy.com/api/v1"
 
     attr_accessor :api_endpoint
 
