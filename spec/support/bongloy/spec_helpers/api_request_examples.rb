@@ -65,7 +65,7 @@ module Bongloy
         describe "#bongloy_account" do
           subject { build(factory, :bongloy_account => bongloy_account) }
           it { expect(subject.bongloy_account).to eq(bongloy_account) }
-          it { expect(subject.headers["bongloy_account"]).to eq(bongloy_account) }
+          it { expect(subject.headers["Bongloy-Account"]).to eq(bongloy_account) }
         end
 
         describe "#headers" do
